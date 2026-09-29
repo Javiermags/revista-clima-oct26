@@ -210,6 +210,20 @@ tr.kept td,tr.kept:hover td{background:color-mix(in srgb,var(--brand) 10%,var(--
 .okbox:hover span{border-color:var(--brand,var(--sun))}
 tr.validado td{background:color-mix(in srgb,#1E9E62 9%,var(--surface)) !important}
 .muted-dash{color:var(--muted)}
+
+.grp .cmp-head{margin-bottom:16px}
+.gprops{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px}
+.gprop{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--input);border-left:5px solid var(--sun)}
+.gprop .gp{display:flex;justify-content:space-between;align-items:baseline;margin:0;color:var(--muted);font-size:.92rem}
+.gprop .gp strong{color:var(--accent);font-size:1.25rem;font-family:"Barlow Condensed","Arial Narrow",sans-serif}
+.gtable th.gcol{background:var(--sun);color:#fff}
+.gtable th .gprice{display:block;font-family:"Barlow",sans-serif;font-weight:500;font-size:.85rem;opacity:.92}
+.gtable .tag{margin:0}
+.gdiff{display:inline-flex;flex-direction:column;align-items:flex-end;line-height:1.15;color:var(--muted)}
+.gdiff strong{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:1.15rem}
+.gdiff em{font-style:normal;font-size:.82rem}
+.gdiff.good{color:var(--good)} .gdiff.bad{color:var(--bad)}
+.gnote{margin:8px 0 0;font-size:.85rem;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -268,13 +282,17 @@ const TABS = [
  ]},
  {name:"Termostatos suelo radiante", portes:false, medio:false, families:[
   {family:"Nuevos propuestos", sub:"Termostatos de suelo radiante a incorporar al porfolio", items:[
-    {id:"TF-CM1P", vs:"cronofilar", wifi:false, prov:"Ferco", model:"CM1P – Cronotermostato digital cable frío/calor, superficie", ref:"Programable 7 días (4 periodos/día) · 2xAAA · 5–35 °C · 86x86x26", pvp:39.60, dto:50},
-    {id:"TF-CM2", vs:"hw-T4H110A1022", wifi:false, prov:"Ferco", model:"CM2 – Cronotermostato digital cable frío/calor, encastrado", ref:"Pantalla táctil · programable 7 días · bloqueo niños · sensor ventanas · 220V · 86x86x16", pvp:59.40, dto:50},
-    {id:"TF-GN1R", vs:"cronoradio", wifi:false, prov:"Ferco", model:"GN1R – Kit crono digital frío/calor superficie, radiofrecuencia", ref:"Cronotermostato AM1T + receptor RF1 · 1 zona · 2xAAA · 5–35 °C · 86x86x26", pvp:91.30, dto:50},
-    {id:"TF-GN1T", vs:"hw-Y6H910RW4013", wifi:true, prov:"Ferco", model:"GN1T – Kit crono digital frío/calor superficie, WiFi + RF", ref:"Cronotermostato AM1T + receptor WiFi GN · 1 zona · Alexa / Google · app Ecohome Life y TuyaSmart", pvp:111.10, dto:50},
-    {id:"TF-GN2R", vs:"hw-Y4H910RF4005", wifi:false, prov:"Ferco", model:"GN2R – Kit crono digital frío/calor encastrado, radiofrecuencia", ref:"Cronotermostato AM2 + receptor RF1 · 1 zona · táctil · 220V · 86x86x16", pvp:111.10, dto:50},
-    {id:"TF-GN2T", vs:"hw-Y6H810WF1005", wifi:true, prov:"Ferco", model:"GN2T – Kit crono digital frío/calor encastrado, WiFi + RF", ref:"Cronotermostato AM2 + receptor WiFi GN · 1 zona · táctil · 220V · Alexa / Google · app Ecohome Life y TuyaSmart", pvp:130.90, dto:50}
+    {id:"TF-CM1P", vs:"grp-cableados", wifi:false, prov:"Ferco", model:"CM1P – Cronotermostato digital cable frío/calor, superficie", ref:"Programable 7 días (4 periodos/día) · 2xAAA · 5–35 °C · 86x86x26", pvp:39.60, dto:50},
+    {id:"TF-CM2", vs:"grp-cableados", wifi:false, prov:"Ferco", model:"CM2 – Cronotermostato digital cable frío/calor, encastrado", ref:"Pantalla táctil · programable 7 días · bloqueo niños · sensor ventanas · 220V · 86x86x16", pvp:59.40, dto:50},
+    {id:"TF-GN1R", vs:"grp-radio", wifi:false, prov:"Ferco", model:"GN1R – Kit crono digital frío/calor superficie, radiofrecuencia", ref:"Cronotermostato AM1T + receptor RF1 · 1 zona · 2xAAA · 5–35 °C · 86x86x26", pvp:91.30, dto:50},
+    {id:"TF-GN1T", vs:"grp-wifi", wifi:true, prov:"Ferco", model:"GN1T – Kit crono digital frío/calor superficie, WiFi + RF", ref:"Cronotermostato AM1T + receptor WiFi GN · 1 zona · Alexa / Google · app Ecohome Life y TuyaSmart", pvp:111.10, dto:50},
+    {id:"TF-GN2R", vs:"grp-radio", wifi:false, prov:"Ferco", model:"GN2R – Kit crono digital frío/calor encastrado, radiofrecuencia", ref:"Cronotermostato AM2 + receptor RF1 · 1 zona · táctil · 220V · 86x86x16", pvp:111.10, dto:50},
+    {id:"TF-GN2T", vs:"grp-wifi", wifi:true, prov:"Ferco", model:"GN2T – Kit crono digital frío/calor encastrado, WiFi + RF", ref:"Cronotermostato AM2 + receptor WiFi GN · 1 zona · táctil · 220V · Alexa / Google · app Ecohome Life y TuyaSmart", pvp:130.90, dto:50}
   ]}
+ ], groups:[
+  {key:"grp-cableados", tipo:"Termostatos cableados", uso:"CM1P y CM2 frente a los termostatos cableados actuales, en precio revista", nuevos:["TF-CM1P","TF-CM2"], actuales:["friocalor","hw-DT40BT22","hw-DT40WT20","hw-T4H110A1022","hw-DT90A1008","hw-DT90E1012","hw-T3H110A0050"]},
+  {key:"grp-radio", tipo:"Termostatos vía radio", uso:"GN1R y GN2R frente a los termostatos vía radio actuales, en precio revista", nuevos:["TF-GN1R","TF-GN2R"], actuales:["cronoradio","hw-YT42BRFT22","hw-YT42WRFT20","hw-Y4H910RF4005","hw-DT92A1004","hw-DT92E1000","hw-Y3H710RF0067"]},
+  {key:"grp-wifi", tipo:"Termostatos WiFi", uso:"GN1T y GN2T frente a los Lyric T6 actuales, en precio revista", nuevos:["TF-GN1T","TF-GN2T"], actuales:["hw-Y6H810WF1005","hw-Y6H910WF4032","hw-Y6H910RW4013"]}
  ], cmpSub:"Termostatos actuales (CABEL y Honeywell Home) frente a los nuevos propuestos, en precio revista. Ninguno de los CABEL tiene WiFi.", rows:[
   {key:"friocalor", tipo:"Termostato digital frío/calor", uso:"Filar",
    actual:{marca:"CABEL", cod:"6360013", wifi:false, stock:15, desc:"Termostato frío/calor filar", pvp:77, revista:35.51}
@@ -615,24 +633,46 @@ function renderStock(tab){
   const total = rows.reduce((a,r) => a + (r.disp || 0), 0);
   return `<section><h2>Listado de stock</h2><p class="sub">${tab.sub}</p>
     <div class="table-wrap"><table><thead><tr>
-      <th>Marca</th><th>Código</th><th>Descripción</th><th class="num">Disponible</th><th class="num">Precio de compra</th><th class="num">Precio propuesto</th>
+      <th>Marca</th><th>Código</th><th>Descripción</th><th class="num">Disponible</th><th class="num">Precio de compra</th><th class="num">Margen</th><th class="num">Precio revista</th>
     </tr></thead><tbody>
     ${rows.length ? rows.map(r => {
-      const st = store["dep-" + r.cod] || {}, v = st.pp ?? "", pc = st.pc ?? "", lk = !!st.lock;
+      const st = store["dep-" + r.cod] || {}, v = st.pp ?? "", pc = st.pc ?? "", lk = !!st.lock, mg = depMargin(st);
       return `<tr>
       <td class="prov">${r.marca || "—"}</td><td>${r.cod || "—"}</td>
       <td class="model"><strong>${r.desc}</strong>${r.ref ? `<span>${r.ref}</span>` : ""}</td>
       <td class="num"><span class="stock ${r.disp ? "" : "none"}">${r.disp ? r.disp + (r.disp === 1 ? " unidad" : " unidades") : "Sin stock"}</span>${r.ubic ? `<span class="diff" style="color:var(--muted)">${r.ubic}</span>` : ""}</td>
       <td class="num"><span class="lockwrap"><span class="field ${lk ? "locked" : ""}"><input class="wide pc" type="number" step="0.01" min="0" inputmode="decimal" data-cod="${r.cod}" value="${pc}" placeholder="—" ${lk || !CAN_BUY ? "disabled" : ""} aria-label="Precio de compra ${r.cod}"><em>€</em></span><button type="button" class="lockbtn" data-cod="${r.cod}" aria-pressed="${lk}" ${CAN_BUY ? "" : "disabled"} title="${lk ? "Desbloquear (pulsa dos veces)" : "Bloquear"}">${lk ? "🔒" : "🔓"}</button></span></td>
+      <td class="num"><span class="field"><input class="mg" type="number" step="0.5" inputmode="decimal" data-cod="${r.cod}" value="${mg}" placeholder="—" aria-label="Margen ${r.cod}"><em>%</em></span></td>
       <td class="num"><span class="field"><input class="wide pp" type="number" step="0.01" min="0" inputmode="decimal" data-cod="${r.cod}" value="${v}" placeholder="—" aria-label="Precio propuesto ${r.cod}"><em>€</em></span></td>
-    </tr>`;}).join("") + `<tr><td colspan="3" style="text-align:right;font-weight:600">Total unidades disponibles</td><td class="num" style="font-weight:700">${total}</td><td></td><td></td></tr>`
-    : `<tr><td colspan="6" class="emptyrow">Pendiente de añadir depósitos.</td></tr>`}
+    </tr>`;}).join("") + `<tr><td colspan="3" style="text-align:right;font-weight:600">Total unidades disponibles</td><td class="num" style="font-weight:700">${total}</td><td></td><td></td><td></td></tr>`
+    : `<tr><td colspan="7" class="emptyrow">Pendiente de añadir depósitos.</td></tr>`}
     </tbody></table></div></section>`;
 }
+const depNum = v => { const n = parseFloat(String(v).replace(",", ".")); return isFinite(n) ? n : null; };
+const fmtMg = n => n == null ? "" : String(Math.round(n * 10) / 10);
+function depMargin(st){
+  if (st.src === "mg" && st.mg !== undefined && st.mg !== "") return st.mg;
+  const pc = depNum(st.pc), pp = depNum(st.pp);
+  return pc && pp != null ? fmtMg((pp / pc - 1) * 100) : "";
+}
 document.addEventListener("input", e => {
-  const inp = e.target.closest("input.pp, input.pc"); if (!inp) return;
-  const k = "dep-" + inp.dataset.cod;
-  store[k] = store[k] || {}; store[k][inp.classList.contains("pc") ? "pc" : "pp"] = inp.value; save(k);
+  const inp = e.target.closest("input.pp, input.pc, input.mg"); if (!inp) return;
+  const cod = inp.dataset.cod, k = "dep-" + cod;
+  const s = store[k] = store[k] || {};
+  const tr = inp.closest("tr");
+  const fPP = tr.querySelector("input.pp"), fMG = tr.querySelector("input.mg");
+  if (inp.classList.contains("pc")){
+    s.pc = inp.value;
+    if (s.src === "mg" && depNum(s.mg) != null && depNum(s.pc)){ s.pp = (depNum(s.pc) * (1 + depNum(s.mg) / 100)).toFixed(2); fPP.value = s.pp; }
+    else fMG.value = depMargin(s);
+  } else if (inp.classList.contains("mg")){
+    s.mg = inp.value; s.src = "mg";
+    if (depNum(s.mg) != null && depNum(s.pc)){ s.pp = (depNum(s.pc) * (1 + depNum(s.mg) / 100)).toFixed(2); fPP.value = s.pp; }
+  } else {
+    s.pp = inp.value; s.src = "pp";
+    fMG.value = depMargin(s);
+  }
+  save(k);
 });
 document.addEventListener("click", e => {
   const b = e.target.closest(".lockbtn"); if (!b || !CAN_BUY) return;
@@ -662,7 +702,37 @@ function prod(p, label){
 }
 function renderCompare(tab){
   const nuevos = (tab.families || []).flatMap(f => f.items);
-  return `<section class="cmp" id="cmpbox"><h2 class="cmp-title">Comparativa con lo que teníamos</h2><p class="sub">${tab.cmpSub || "Grupos CABEL actuales frente a los nuevos propuestos, en precio revista."}</p>` + tab.rows.map(r => {
+  const usados = new Set((tab.groups || []).flatMap(g => g.actuales));
+  const revOf = it => { if (!it) return null; const n = it.neto ?? r2(it.pvp * (1 - it.dto/100)); const m = num((store[it.id]||{}).m); return m !== null ? r2(n * (1 + m/100)) : null; };
+  const gruposHTML = (tab.groups || []).map(g => {
+    const nv = g.nuevos.map(id => nuevos.find(n => n.id === id)).filter(Boolean);
+    const acts = g.actuales.map(k => tab.rows.find(r => r.key === k)).filter(r => r && r.actual);
+    const nvRev = nv.map(revOf);
+    const head = nv.map((it, i) => `<th class="num gcol">${it.model.split(" – ")[0]}<span class="gprice">${nvRev[i] != null ? eur(nvRev[i]) : "Falta el margen"}</span></th>`).join("");
+    const rows = acts.map(r => {
+      const a = r.actual;
+      const cells = nvRev.map(v => {
+        if (v == null || !a.revista) return `<td class="num"><span class="gdiff">—</span></td>`;
+        const d = v - a.revista, pc = d / a.revista * 100;
+        return `<td class="num"><span class="gdiff ${d <= 0 ? "good" : "bad"}"><strong>${d > 0 ? "+" : ""}${eur(d)}</strong><em>${d > 0 ? "+" : ""}${pc.toFixed(1).replace(".", ",")} %</em></span></td>`;
+      }).join("");
+      return `<tr>
+        <td class="model"><strong>${a.marca} ${a.cod}</strong><span>${r.tipo} · ${a.desc}</span></td>
+        <td>${a.wifi ? `<span class="tag wifi">Con WiFi</span>` : `<span class="tag nowifi">Sin WiFi</span>`}</td>
+        <td class="num">${a.stock != null ? `<span class="stock ${a.stock ? "" : "none"}">${a.stock ? a.stock + (a.stock === 1 ? " ud" : " uds") : "Sin stock"}</span>` : "—"}</td>
+        <td class="num">${eur(a.pvp)}</td>
+        <td class="num revista">${eur(a.revista)}</td>
+        ${cells}
+      </tr>`;
+    }).join("");
+    return `<section class="cmp-row grp">
+      <header class="cmp-head"><h2>${g.tipo}</h2><p class="sub">${g.uso}</p></header>
+      <div class="gprops">${nv.map((it, i) => `<div class="gprop"><span class="tag">Propuesto</span> ${it.wifi ? `<span class="tag wifi">Con WiFi</span>` : `<span class="tag nowifi">Sin WiFi</span>`}<p class="pm">${it.prov} ${it.model.split(" – ")[0]}</p><p class="pd">${it.model.split(" – ")[1] || ""}</p><p class="gp"><span>PVP ${eur(it.pvp)}</span><strong>${nvRev[i] != null ? eur(nvRev[i]) : "Falta el margen"}</strong></p></div>`).join("")}</div>
+      <div class="table-wrap"><table class="gtable"><thead><tr><th>Actual</th><th>WiFi</th><th class="num">Stock</th><th class="num">PVP</th><th class="num">Precio revista</th>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="gnote">En verde, el propuesto sale más barato que el actual; en rojo, más caro.</p>
+    </section>`;
+  }).join("");
+  return `<section class="cmp" id="cmpbox"><h2 class="cmp-title">Comparativa con lo que teníamos</h2><p class="sub">${tab.cmpSub || "Grupos CABEL actuales frente a los nuevos propuestos, en precio revista."}</p>` + gruposHTML + tab.rows.filter(r => !usados.has(r.key)).map(r => {
     const it = nuevos.find(n => n.vs === r.key);
     let rv = null;
     if (it){ const n = it.neto ?? r2(it.pvp * (1 - it.dto/100)); const m = num((store[it.id]||{}).m); if (m !== null) rv = r2(n * (1 + m/100)); }
