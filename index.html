@@ -6,35 +6,32 @@
 <title>Propuesta de porfolio de materiales</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F3F5F7; --surface:#FFFFFF; --ink:#1A2233; --muted:#6B7686; --line:#D9DEE5;
-  --cell:#22406B; --cell-soft:#E6ECF5; --sun:#F2B705; --good:#1E7A4F; --bad:#B23A2E;
-  --input:#F7F9FB;
+  --bg:#F5F5F4; --surface:#FFFFFF; --ink:#141517; --muted:#6D6E72; --line:#E2E2DF;
+  --cell:#141517; --cell-soft:#F0F0EE; --sun:#FC671A; --good:#1E7A4F; --bad:#B23A2E;
+  --input:#F8F8F7; --th-bg:#141517; --th-ink:#FFFFFF; --accent:#E0540C;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#121821; --surface:#1A222E; --ink:#E7ECF3; --muted:#95A0B0; --line:#2C3747;
-    --cell:#8FB2E6; --cell-soft:#223149; --sun:#F2B705; --good:#5CC393; --bad:#EF7B6F; --input:#131A24;
+    --bg:#0F1011; --surface:#18191B; --ink:#EDEDEC; --muted:#A1A2A6; --line:#2C2D30;
+    --cell:#F5F5F4; --cell-soft:#26272A; --sun:#FC671A; --good:#5CC393; --bad:#EF7B6F; --input:#131415; --th-bg:#26272A; --th-ink:#FFFFFF; --accent:#FF8A4C;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#121821; --surface:#1A222E; --ink:#E7ECF3; --muted:#95A0B0; --line:#2C3747;
-  --cell:#8FB2E6; --cell-soft:#223149; --sun:#F2B705; --good:#5CC393; --bad:#EF7B6F; --input:#131A24;
+  --bg:#0F1011; --surface:#18191B; --ink:#EDEDEC; --muted:#A1A2A6; --line:#2C2D30;
+  --cell:#F5F5F4; --cell-soft:#26272A; --sun:#FC671A; --good:#5CC393; --bad:#EF7B6F; --input:#131415; --th-bg:#26272A; --th-ink:#FFFFFF; --accent:#FF8A4C;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.45}
-.wrap{max-width:1180px;margin:0 auto;padding:40px 24px 64px}
+.wrap{max-width:1480px;margin:0 auto;padding:0 24px 72px}
 
-header{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;border-bottom:3px solid var(--cell);padding-bottom:20px;margin-bottom:32px}
 .company{font-weight:600;color:var(--muted);margin:0 0 4px}
-h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:clamp(2.4rem,6vw,3.6rem);line-height:1;margin:0;letter-spacing:-.01em}
-h1::after{content:"";display:block;width:56px;height:6px;background:var(--sun);margin-top:12px}
 .intro{margin:12px 0 0;color:var(--muted);max-width:60ch}
 
 .global{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -43,11 +40,6 @@ h1::after{content:"";display:block;width:56px;height:6px;background:var(--sun);m
 .global button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 
 section{margin-bottom:40px}
-.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:28px;border-bottom:1px solid var(--line)}
-.tabs button{font:inherit;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:1.1rem;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;padding:10px 16px;color:var(--muted);cursor:pointer}
-.tabs button[aria-selected="true"]{color:var(--cell);border-bottom-color:var(--sun)}
-.tabs button:hover{color:var(--ink)}
-.tabs button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .cmp{margin-top:48px}
 .cmp-title{font-size:1.9rem}
 .cmp-row{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin-bottom:18px}
@@ -59,7 +51,7 @@ section{margin-bottom:40px}
 .prod.pending{border-style:dashed;display:flex;flex-direction:column;color:var(--muted)}
 .prod.pending p{margin:auto 0;text-align:center}
 .tag{display:inline-block;font-weight:600;font-size:.82rem;color:var(--cell);background:var(--cell-soft);padding:2px 10px;border-radius:999px;margin-bottom:8px}
-.stock{display:inline-block;font-size:.88rem;font-weight:600;padding:1px 10px;border-radius:999px;background:var(--sun);color:#1A2233}
+.stock{display:inline-block;font-size:.88rem;font-weight:600;padding:1px 10px;border-radius:999px;background:var(--sun);color:#fff}
 .stock.none{background:var(--cell-soft);color:var(--muted)}
 .tag.nowifi{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
 .tag.wifi{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good)}
@@ -68,7 +60,7 @@ section{margin-bottom:40px}
 .prod dl{display:flex;flex-wrap:wrap;gap:12px 24px;margin:0;font-variant-numeric:tabular-nums}
 .prod dt{font-size:.82rem;color:var(--muted)}
 .prod dd{margin:0;font-weight:600}
-.prod dd.neto{color:var(--cell);font-size:1.1rem;font-weight:700}
+.prod dd.neto{color:var(--accent);font-size:1.1rem;font-weight:700}
 .verdict{display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:8px;padding:14px;background:var(--cell-soft);color:var(--muted);font-variant-numeric:tabular-nums}
 .verdict strong{font-size:1.4rem;font-family:"Barlow Condensed","Arial Narrow",sans-serif}
 .verdict.good{color:var(--good)} .verdict.bad{color:var(--bad)}
@@ -79,8 +71,6 @@ section{margin-bottom:40px}
 .lockbtn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .field.locked{background:var(--cell-soft);border-color:transparent}
 .field.locked input{color:var(--ink);font-weight:600;-webkit-text-fill-color:var(--ink);opacity:1}
-.sync{margin:0 0 12px;font-size:.88rem;color:var(--muted)}
-.sync.bad{color:var(--bad)}
 .field.warn{border-color:var(--bad)}
 .lockbtn:disabled{opacity:.5;cursor:not-allowed}
 .emptyrow{text-align:center;color:var(--muted);padding:28px 14px}
@@ -88,26 +78,29 @@ section{margin-bottom:40px}
 h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:1.6rem;margin:0 0 4px}
 .sub{color:var(--muted);margin:0 0 14px}
 
-.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px}
-table{width:100%;border-collapse:collapse;min-width:1180px;font-variant-numeric:tabular-nums}
-th{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:1rem;text-align:left;color:var(--cell);background:var(--cell-soft);padding:12px 14px;white-space:nowrap}
+.table-wrap{overflow-x:visible;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:0;font-variant-numeric:tabular-nums}
+th{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:1rem;text-align:left;color:var(--th-ink);background:var(--th-bg);padding:10px 10px;white-space:normal;line-height:1.15;vertical-align:bottom}
 th.num,td.num{text-align:right}
-td{padding:12px 14px;border-top:1px solid var(--line);vertical-align:middle}
+td{padding:10px 10px;border-top:1px solid var(--line);vertical-align:middle}
 tbody tr:hover{background:color-mix(in srgb,var(--cell-soft) 45%,transparent)}
 .model strong{display:block;font-weight:600}
 .model span{color:var(--muted);font-size:.9rem}
 .prov{font-weight:500}
 .neto{font-weight:600}
-.revista{font-weight:700;color:var(--cell);font-size:1.05rem}
+.revista{font-weight:700;color:var(--accent);font-size:1.05rem}
 .t6m{font-weight:700}
 .portes{display:inline-block;font-weight:600;font-size:.88rem;padding:2px 10px;border-radius:999px;background:var(--cell-soft);color:var(--muted)}
-.portes.si{background:var(--sun);color:#1A2233}
+.portes.si{background:var(--sun);color:#fff}
 .t6p{color:var(--muted)}
 
 .field{display:inline-flex;align-items:center;gap:4px;background:var(--input);border:1.5px solid var(--line);border-radius:6px;padding:0 8px;transition:border-color .15s}
-.field:focus-within{border-color:var(--cell)}
+.field:focus-within{border-color:var(--sun)}
 .field input{font:inherit;font-variant-numeric:tabular-nums;width:64px;border:0;background:transparent;color:var(--ink);padding:7px 0;text-align:right;-moz-appearance:textfield}
 .field input.wide{width:84px}
+.table-wrap td.num{white-space:nowrap}
+thead th:first-child{border-top-left-radius:9px}thead th:last-child{border-top-right-radius:9px}
+@media (max-width:760px){.table-wrap{overflow-x:auto}.table-wrap table{min-width:900px}}
 .field input::-webkit-outer-spin-button,.field input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .field input:focus-visible{outline:none}
 .field em{font-style:normal;color:var(--muted)}
@@ -129,20 +122,104 @@ tbody tr:hover{background:color-mix(in srgb,var(--cell-soft) 45%,transparent)}
   table{min-width:0}
   .field{border:0;background:none;padding:0}
 }
+
+
+.motivo-col{width:22%;min-width:200px}
+textarea.motivo{width:100%;min-height:52px;resize:vertical;font:inherit;font-size:.92rem;color:var(--ink);background:var(--input);border:1px solid var(--line);border-radius:8px;padding:8px 10px;box-sizing:border-box}
+textarea.motivo:focus{outline:none;border-color:var(--sun)}
+
+.brand{margin:0 0 22px}
+.brand-name{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:1.25rem;color:var(--brand)}
+.brand-name::before{content:"";width:6px;height:1.2em;border-radius:3px;background:var(--brand)}
+.brand .table-wrap{border-color:color-mix(in srgb, var(--brand) 35%, var(--line))}
+.brand th{background:var(--brand);color:#fff}
+.brand textarea.motivo:focus{border-color:var(--brand)}
+.brand .stock{background:var(--brand)}
+.brand .stock.none{background:var(--cell-soft);color:var(--muted)}
+
+.serie{margin:0 0 18px}
+.ret td.model{min-width:190px}.ret td:nth-child(7){white-space:nowrap}
+.serie-name{margin:0 0 8px;font-weight:600;font-size:.95rem;color:var(--ink)}
+.serie-nota{margin:6px 0 0;font-size:.82rem;font-style:italic;color:var(--muted)}
+tr.kept td{background:color-mix(in srgb, var(--brand) 8%, transparent)}
+.keep{font-size:.88rem;font-weight:600;color:var(--brand);line-height:1.3}
+/* ===== Restyling ===== */
+body{background:var(--bg)}
+.mast{background:#030405;color:#fff;position:relative;overflow:hidden}
+.mast::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--sun)}
+.mast-in{max-width:1480px;margin:0 auto;padding:26px 24px 30px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.mast-logo{height:42px;width:auto;display:block}
+.mast-meta{border-left:1px solid rgba(255,255,255,.22);padding-left:24px}
+.mast-meta p{margin:0}
+.mast-title{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:1.55rem;line-height:1;letter-spacing:.01em}
+.mast-date{color:#A9AAAE;font-size:.92rem;margin-top:4px !important}
+.mast .sync{margin:0 0 0 auto;display:inline-flex;align-items:center;gap:8px;font-size:.88rem;color:#D6D7D9;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:6px 12px 6px 10px;border-radius:999px}
+.mast .sync:empty{display:none}
+.mast .sync::before{content:"";width:8px;height:8px;border-radius:50%;background:#46C98B;box-shadow:0 0 0 3px rgba(70,201,139,.2)}
+.mast .sync.bad{color:#FFC2B8}
+.mast .sync.bad::before{background:#FF6B55;box-shadow:0 0 0 3px rgba(255,107,85,.22)}
+
+.tabs{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px max(24px,calc((100% - 1480px)/2 + 24px));padding-top:calc(12px + env(safe-area-inset-top,0px));display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;font:inherit;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:1.08rem;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:999px;padding:7px 16px;cursor:pointer;transition:background .15s,color .15s}
+.tabs button:hover{color:var(--ink);background:var(--surface);border-color:var(--line)}
+.tabs button[aria-selected="true"]{background:var(--sun);color:#fff;border-color:var(--sun)}
+.tabs button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+.hero{display:flex;align-items:center;gap:22px;margin:46px 0 34px}
+.hero-mark{flex:none;position:relative;width:46px;height:64px;border:9px solid var(--ink);border-right:0}
+.hero-mark::after{content:"";position:absolute;left:8px;top:50%;width:38px;height:13px;margin-top:-6.5px;background:var(--sun);animation:barIn .55s cubic-bezier(.2,.8,.2,1) both}
+.hero-mark:not(.go)::after{animation:none}
+@keyframes barIn{from{transform:translateX(-26px);opacity:0}to{transform:none;opacity:1}}
+h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:800;font-size:clamp(2.6rem,6.5vw,4.8rem);line-height:.95;margin:0;letter-spacing:-.015em}
+
+section{margin-bottom:52px}
+h2{font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:700}
+.table-wrap{border-radius:14px;border:1px solid var(--line);background:var(--surface)}
+thead th:first-child{border-top-left-radius:13px}thead th:last-child{border-top-right-radius:13px}
+th{padding-top:13px;padding-bottom:13px;letter-spacing:.01em}
+tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--bg) 55%,var(--surface))}
+tbody tr:hover td{background:color-mix(in srgb,var(--sun) 7%,var(--surface))}
+tr.kept td,tr.kept:hover td{background:color-mix(in srgb,var(--brand) 10%,var(--surface))}
+.field{transition:border-color .15s,box-shadow .15s}
+.field:focus-within{box-shadow:0 0 0 3px color-mix(in srgb,var(--sun) 22%,transparent)}
+.brand-name{font-size:1.5rem}
+.note{max-width:90ch}
+@media (max-width:640px){
+  .mast-in{padding:18px 16px 22px;gap:14px}
+  .mast-logo{height:28px}
+  .mast-meta{border-left:0;padding-left:0;width:100%}
+  .mast .sync{margin-left:0}
+  .tabs{padding-left:16px;padding-right:16px}
+  .wrap{padding:0 16px 56px}
+  .hero{gap:14px;margin:30px 0 24px}
+  .hero-mark{width:32px;height:44px;border-width:6px}
+  .hero-mark::after{left:5px;width:26px;height:9px;margin-top:-4.5px}
+}
+@media (prefers-reduced-motion:reduce){.hero-mark::after{animation:none}.tabs button,.field{transition:none}}
+
 </style>
 </head>
 <body>
-<div class="wrap">
-  <p class="sync" id="sync" role="status"></p>
-  <nav class="tabs" role="tablist" id="tabs"></nav>
-  <header>
-    <div>
-      <h1 id="title">Fotovoltaica</h1>
+<header class="mast">
+  <div class="mast-in">
+    <img class="mast-logo" alt="MAGSERVEIS" src="data:image/png;base64,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">
+    <div class="mast-meta">
+      <p class="mast-title">Revista Clima</p>
+      <p class="mast-date">Propuesta de porfolio, octubre 2026</p>
     </div>
-  </header>
+    <p class="sync" id="sync" role="status"></p>
+  </div>
+</header>
+<nav class="tabs" role="tablist" id="tabs"></nav>
+<div class="wrap">
+  <div class="hero">
+    <span class="hero-mark" aria-hidden="true"></span>
+    <h1 id="title">Fotovoltaica</h1>
+  </div>
 
   <main id="families"></main>
-  <p class="note" id="note">Precio neto = PVP × (1 − descuento). Precio revista (precio base) = precio neto × (1 + margen). Precio T6 = precio revista × (1 − descuento T6); margen venta T6 = (precio T6 − precio neto) ÷ precio neto. Bajo el precio revista se indica la diferencia con el precio medio encontrado. Los valores editados se guardan en este navegador.</p>
+  <p class="note" id="note">Precio neto = PVP × (1 − descuento). Precio revista (precio base) = precio neto × (1 + margen). Precio T6 = precio revista × (1 − descuento T6); margen venta T6 = (precio T6 − precio neto) ÷ precio neto. Bajo el precio revista se indica la diferencia con el precio medio encontrado. Los valores editados se guardan automáticamente y los ve cualquiera con el enlace.</p>
 </div>
 
 <script>
@@ -263,6 +340,30 @@ const TABS = [
    actual:{marca:"Honeywell Home", cod:"T6360B1002", stock:86, wifi:false, desc:"Termostato T-6360B 1002", pvp:36, revista:19.32}
    }
  ]},
+ {name:"Aerotermias", mode:"retirar", titulo:"A retirar de revista", sub:"Equipos en oferta hasta agotar existencias que salen de la revista", items:[
+  {marca:"Vaillant", serie:"aroTHERM con sensoCONFORT VRT 720 cableado UNITOWER incluido – oferta hasta agotar existencias", cod:"0020237372", model:"aroTHERM VWL 85/2 A", dims:"Ext. 975 x 1.103 x 463 · Int. 1880 x 599 x 693", frio:6.6, calor:9.5, alim:"230V", refrig:"R410", conex:"G 1 1/4", precio:5868.80, stock:0},
+  {marca:"Vaillant", serie:"aroTHERM con sensoCONFORT VRT 720 cableado UNITOWER incluido – oferta hasta agotar existencias", cod:"20237373", model:"aroTHERM VWL 115/2 A", dims:"Ext. 975 x 1.103 x 463 · Int. 1880 x 599 x 693", frio:8.3, calor:11.3, alim:"230V", refrig:"R410", conex:"G 1 1/4", precio:6627.60, stock:null},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Básico Plus (monobloc) cableado (R290) · WiFi", nota:"* 15 años de cobertura total, sujeto a contratación del servicio de mantenimiento Serviplus del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306792", model:"aroTHERM Plus 4", dims:"Alt x Anc x Fnd 765 x 477 x 1100", frio:5, calor:5.5, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:8945, precio:5009.2, stock:null},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Básico Plus (monobloc) cableado (R290) · WiFi", nota:"* 15 años de cobertura total, sujeto a contratación del servicio de mantenimiento Serviplus del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306794", model:"aroTHERM Plus 6", dims:"Alt x Anc x Fnd 965 x 477 x 1100", frio:6.3, calor:7.8, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:9595, precio:5373.2, stock:null},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Básico Plus (monobloc) cableado (R290) · WiFi", nota:"* 15 años de cobertura total, sujeto a contratación del servicio de mantenimiento Serviplus del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306796", model:"aroTHERM Plus 8", dims:"Alt x Anc x Fnd 965 x 477 x 1100", frio:7.7, calor:10.1, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:9930, precio:5560.8, stock:null},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Básico Plus (monobloc) cableado (R290) · WiFi", nota:"* 15 años de cobertura total, sujeto a contratación del servicio de mantenimiento Serviplus del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306798", model:"aroTHERM Plus 12", dims:"Alt x Anc x Fnd 1565 x 477 x 1100", frio:10, calor:14, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:13100, precio:7336.0, stock:2, keep:true, keepText:"Se mantiene en revista"},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Básico Plus (monobloc) cableado (R290) · WiFi", nota:"* 15 años de cobertura total, sujeto a contratación del servicio de mantenimiento Serviplus del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306802", model:"aroTHERM Plus 15", dims:"Alt x Anc x Fnd 1565 x 477 x 1100", frio:12.8, calor:18.1, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:13735, precio:7691.6, stock:null},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Unitower Plus cableado (R290) · WiFi", nota:"* Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306899", model:"aroTHERM Plus 4 Unitower", dims:"Ext. 765 x 477 x 1100 · Int. 1880 x 595 x 693", frio:5, calor:5.5, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:12455, precio:6974.8, stock:null},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Unitower Plus cableado (R290) · WiFi", nota:"* Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306901", model:"aroTHERM Plus 6 Unitower", dims:"Ext. 965 x 477 x 1100 · Int. 1880 x 595 x 693", frio:6.3, calor:7.8, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:13105, precio:7338.8, stock:null},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Unitower Plus cableado (R290) · WiFi", nota:"* Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306903", model:"aroTHERM Plus 8 Unitower", dims:"Ext. 965 x 477 x 1100 · Int. 1880 x 595 x 693", frio:7.7, calor:10.1, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:13440, precio:7526.4, stock:null},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Unitower Plus cableado (R290) · WiFi", nota:"* Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306905", model:"aroTHERM Plus 12 Unitower", dims:"Ext. 1565 x 477 x 1100 · Int. 1880 x 595 x 693", frio:10, calor:14, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:16610, precio:9301.6, stock:3, keep:true, keepText:"Se mantiene en revista"},
+  {marca:"Vaillant", serie:"aroTHERM Plus Set Unitower Plus cableado (R290) · WiFi", nota:"* Opción inalámbrico. Modelos 12 y 15 opción trifásico. Equipos con refrigerante natural exento del impuesto de gases fluorados.", cod:"0020306909", model:"aroTHERM Plus 15 Unitower", dims:"Ext. 1565 x 477 x 1100 · Int. 1880 x 595 x 693", frio:12.8, calor:18.1, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:17245, precio:9657.2, stock:null},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA AIR MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Refrigerante natural exento del impuesto de gases fluorados.", cod:"0020307742", model:"GENIA AIR MAX 4", dims:"Alt x Anc x Fnd 765 x 1100 x 450", frio:5, calor:5.5, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:8945, precio:5009.2, stock:0},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA AIR MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Refrigerante natural exento del impuesto de gases fluorados.", cod:"0020307744", model:"GENIA AIR MAX 6", dims:"Alt x Anc x Fnd 965 x 1100 x 450", frio:6.3, calor:7.8, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:9595, precio:5373.2, stock:0},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA AIR MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Refrigerante natural exento del impuesto de gases fluorados.", cod:"0020307746", model:"GENIA AIR MAX 8", dims:"Alt x Anc x Fnd 965 x 1100 x 450", frio:7.7, calor:10.1, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:9930, precio:5560.8, stock:0},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA AIR MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Refrigerante natural exento del impuesto de gases fluorados.", cod:"0020307748", model:"GENIA AIR MAX 12", dims:"Alt x Anc x Fnd 1565 x 1100 x 440", frio:10, calor:14, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:13100, precio:7336.0, stock:0},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA AIR MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico. Refrigerante natural exento del impuesto de gases fluorados.", cod:"0020307752", model:"GENIA AIR MAX 15", dims:"Alt x Anc x Fnd 1565 x 1100 x 440", frio:12.8, calor:18.1, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:13735, precio:7691.6, stock:1, keep:true},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA SET MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico.", cod:"0020307775", model:"GENIA SET MAX 4", dims:"Ext. 765 x 1100 x 450 · Int. 765 x 1100 x 450", frio:5, calor:5.5, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:12455, precio:6974.8, stock:0},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA SET MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico.", cod:"0020307777", model:"GENIA SET MAX 6", dims:"Ext. 965 x 1100 x 450 · Int. 965 x 1100 x 450", frio:6.3, calor:7.8, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:13105, precio:7338.8, stock:0},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA SET MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico.", cod:"0020307779", model:"GENIA SET MAX 8", dims:"Ext. 965 x 1100 x 450 · Int. 965 x 1100 x 450", frio:7.7, calor:10.1, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:13440, precio:7526.4, stock:0},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA SET MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico.", cod:"0020307781", model:"GENIA SET MAX 12", dims:"Ext. 1565 x 1100 x 440 · Int. 1565 x 1100 x 450", frio:10, calor:14, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:16610, precio:9301.6, stock:0},
+  {marca:"Saunier Duval", serie:"Alta temperatura – GENIA SET MAX con MIPRO SENSE cableado (R290) – oferta hasta agotar existencias", nota:"* 15 años de cobertura total, exclusivamente para clientes con contrato Extensión de Garantía del Servicio Técnico Oficial. Opción inalámbrico. Modelos 12 y 15 opción trifásico.", cod:"0020307789", model:"GENIA SET MAX 15", dims:"Ext. 1565 x 1100 x 440 · Int. 1565 x 1100 x 450", frio:12.8, calor:18.1, alim:"230V", refrig:"R290", conex:"Cableado", temp:75, pvp:17245, precio:9657.2, stock:0}
+ ]},
  {name:"Depósitos de inercia acero al carbono", mode:"stock", sub:"Depósitos que tenemos actualmente en stock (sin contar el stock del CLC)", stock:[
   {marca:"CABEL", cod:"1010001246", desc:"Depósito inercia multiposición Slim DIMSL30", ref:"Ref. fab. 423189 · descatalogado", stock:2, disp:2, ubic:"Suarep Ripollet: 2"},
   {marca:"CABEL", cod:"1010001245", desc:"Depósito inercia multiposición DIM100", ref:"Ref. fab. 423202", stock:5, disp:2, ubic:"Suarep Ripollet: 4 (3 reservadas) · Suarep Vilanova: 1"},
@@ -323,7 +424,7 @@ async function push(){
       SHA = (await r.json()).sha; lastData = data; lastSave = Date.now(); ok = true;
       keys.forEach(k => { if (dirty[k] === snap[k]) delete dirty[k]; });
       applyRemote(data);
-      showSync("Guardado. Todos los que abran el enlace ven esta versión.");
+      showSync("Guardado");
     }
     if (!ok) throw new Error("otra persona está guardando a la vez");
   } catch(err){
@@ -349,7 +450,7 @@ function showSync(msg, bad){
 }
 function rerender(){
   const a = document.activeElement;
-  if (a && a.tagName === "INPUT" && a.closest("#families")) { pendingRender = true; return; }
+  if (a && (a.tagName === "INPUT" || a.tagName === "TEXTAREA") && a.closest("#families")) { pendingRender = true; return; }
   render();
 }
 document.addEventListener("focusout", () => { if (pendingRender){ pendingRender = false; setTimeout(render, 0); } });
@@ -392,7 +493,9 @@ function render(){
   const tabs = document.getElementById("tabs");
   tabs.innerHTML = TABS.map((t,i) => `<button type="button" role="tab" aria-selected="${i===current}" data-tab="${i}">${t.name}</button>`).join("");
   document.getElementById("title").textContent = TABS[current].name;
+  { const mk = document.querySelector(".hero-mark"); if (mk && mk.dataset.t !== String(current)){ mk.dataset.t = current; mk.classList.remove("go"); void mk.offsetWidth; mk.classList.add("go"); } }
   const TAB = TABS[current], P = TAB.portes !== false, M = TAB.medio !== false, COLS = 8 + (P?1:0) + (M?1:0);
+  if (TAB.mode === "retirar"){ document.getElementById("note").hidden = true; document.getElementById("families").innerHTML = renderRetirar(TAB); return; }
   if (TAB.mode === "stock"){ document.getElementById("note").hidden = true; document.getElementById("families").innerHTML = renderStock(TAB); return; }
   document.getElementById("note").hidden = false;
   const DATA = TAB.families || [];
@@ -434,11 +537,62 @@ function render(){
   document.querySelectorAll("tbody tr[data-id]").forEach(update);
 }
 
+const BRAND_COLORS = { "Vaillant":"#00917E", "Saunier Duval":"#E2001A" };
+function renderRetirar(tab){
+  const kw = v => (v == null ? "—" : String(v).replace(".", ","));
+  const eur = v => v == null ? "—" : v.toLocaleString("es-ES", {minimumFractionDigits:2, maximumFractionDigits:2, useGrouping:true}) + " €";
+  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+  const brands = {};
+  tab.items.forEach(r => {
+    const m = r.marca || "Otras marcas", s = r.serie || "";
+    brands[m] = brands[m] || {}; (brands[m][s] = brands[m][s] || []).push(r);
+  });
+  const row = r => {
+    const st = store["ret-" + r.cod] || {};
+    const stk = r.stock == null ? `<span class="stock none">N/D</span>` : `<span class="stock ${r.stock ? "" : "none"}">${r.stock ? r.stock + (r.stock === 1 ? " unidad" : " unidades") : "Sin stock"}</span>`;
+    const mot = r.keep
+      ? `<div class="keep">${r.keepText || "Se mantiene en revista hasta vender la unidad en stock"}</div>`
+      : `<textarea class="motivo" data-cod="${r.cod}" rows="2" placeholder="Escribe el motivo…" aria-label="Motivo de retirada ${r.cod}">${esc(st.motivo ?? "")}</textarea>`;
+    return `<tr class="${r.keep ? "kept" : ""}">
+      <td>${r.cod}</td>
+      <td class="model"><strong>${r.model}</strong>${r.dims ? `<span>${r.dims}</span>` : ""}</td>
+      <td class="num">${kw(r.frio)}</td><td class="num">${kw(r.calor)}</td>
+      <td>${r.alim}</td><td>${r.refrig}</td><td>${r.conex}</td>
+      <td class="num">${r.temp ?? "—"}</td>
+      <td class="num">${eur(r.pvp)}</td>
+      <td class="num" style="font-weight:700">${eur(r.precio)}</td>
+      <td class="num">${stk}</td>
+      <td class="motivo-col">${mot}</td>
+    </tr>`;
+  };
+  const body = Object.keys(brands).map(m => {
+    const col = BRAND_COLORS[m] || "var(--th-bg)";
+    return `<div class="brand" style="--brand:${col}">
+      <h3 class="brand-name">${m}</h3>
+      ${Object.keys(brands[m]).map(s => {
+        const rows = brands[m][s], nota = rows.find(r => r.nota)?.nota;
+        return `<div class="serie">${s ? `<p class="serie-name">${s}</p>` : ""}
+        <div class="table-wrap"><table class="ret"><thead><tr>
+          <th>Código</th><th>Modelo</th><th class="num">Frío (kW)</th><th class="num">Calor (kW)</th><th>Alim.</th><th>Refrig.</th><th>Conex.</th><th class="num">Temp. imp. (°C)</th><th class="num">PVP</th><th class="num">Precio</th><th class="num">Stock</th><th class="motivo-col">Motivo de la retirada</th>
+        </tr></thead><tbody>${rows.map(row).join("")}</tbody></table></div>
+        ${nota ? `<p class="serie-nota">${nota}</p>` : ""}</div>`;
+      }).join("")}
+    </div>`;
+  }).join("");
+  return `<section><h2>${tab.titulo}</h2><p class="sub">${tab.sub}</p>
+    ${tab.items.length ? body : `<div class="table-wrap"><table><tbody><tr><td class="emptyrow">Pendiente de añadir productos.</td></tr></tbody></table></div>`}
+  </section>`;
+}
+document.addEventListener("input", e => {
+  const t = e.target.closest("textarea.motivo"); if (!t) return;
+  const k = "ret-" + t.dataset.cod;
+  store[k] = store[k] || {}; store[k].motivo = t.value; save(k);
+});
 function renderStock(tab){
   const rows = tab.stock;
   const total = rows.reduce((a,r) => a + (r.disp || 0), 0);
   return `<section><h2>Listado de stock</h2><p class="sub">${tab.sub}</p>
-    <div class="table-wrap"><table style="min-width:820px"><thead><tr>
+    <div class="table-wrap"><table><thead><tr>
       <th>Marca</th><th>Código</th><th>Descripción</th><th class="num">Disponible</th><th class="num">Precio de compra</th><th class="num">Precio propuesto</th>
     </tr></thead><tbody>
     ${rows.length ? rows.map(r => {
