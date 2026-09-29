@@ -124,7 +124,7 @@ thead th:first-child{border-top-left-radius:9px}thead th:last-child{border-top-r
 }
 
 
-.motivo-col{width:22%;min-width:200px}
+.motivo-col{width:20%;min-width:170px}
 textarea.motivo{width:100%;min-height:52px;resize:vertical;font:inherit;font-size:.92rem;color:var(--ink);background:var(--input);border:1px solid var(--line);border-radius:8px;padding:8px 10px;box-sizing:border-box}
 textarea.motivo:focus{outline:none;border-color:var(--sun)}
 
@@ -198,6 +198,18 @@ tr.kept td,tr.kept:hover td{background:color-mix(in srgb,var(--brand) 10%,var(--
 }
 @media (prefers-reduced-motion:reduce){.hero-mark::after{animation:none}.tabs button,.field{transition:none}}
 
+
+.ok-col{width:78px;text-align:center !important}
+.okbox{display:inline-flex;cursor:pointer;position:relative}
+.okbox input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.okbox span{width:30px;height:30px;border-radius:8px;border:2px solid var(--line);background:var(--input);display:grid;place-items:center;transition:background .15s,border-color .15s}
+.okbox span::after{content:"";width:8px;height:15px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-2px);opacity:0}
+.okbox input:checked + span{background:#1E9E62;border-color:#1E9E62}
+.okbox input:checked + span::after{opacity:1}
+.okbox input:focus-visible + span{outline:3px solid var(--sun);outline-offset:2px}
+.okbox:hover span{border-color:var(--brand,var(--sun))}
+tr.validado td{background:color-mix(in srgb,#1E9E62 9%,var(--surface)) !important}
+.muted-dash{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -553,7 +565,10 @@ function renderRetirar(tab){
     const mot = r.keep
       ? `<div class="keep">${r.keepText || "Se mantiene en revista hasta vender la unidad en stock"}</div>`
       : `<textarea class="motivo" data-cod="${r.cod}" rows="2" placeholder="Escribe el motivo…" aria-label="Motivo de retirada ${r.cod}">${esc(st.motivo ?? "")}</textarea>`;
-    return `<tr class="${r.keep ? "kept" : ""}">
+    const ok = !!st.ok;
+    const val = r.keep ? `<span class="muted-dash">—</span>`
+      : `<label class="okbox" title="Validar retirada"><input type="checkbox" class="retok" data-cod="${r.cod}" ${ok ? "checked" : ""} aria-label="Validar retirada ${r.cod}"><span></span></label>`;
+    return `<tr class="${r.keep ? "kept" : ""}${ok ? " validado" : ""}">
       <td>${r.cod}</td>
       <td class="model"><strong>${r.model}</strong>${r.dims ? `<span>${r.dims}</span>` : ""}</td>
       <td class="num">${kw(r.frio)}</td><td class="num">${kw(r.calor)}</td>
@@ -563,6 +578,7 @@ function renderRetirar(tab){
       <td class="num" style="font-weight:700">${eur(r.precio)}</td>
       <td class="num">${stk}</td>
       <td class="motivo-col">${mot}</td>
+      <td class="ok-col">${val}</td>
     </tr>`;
   };
   const body = Object.keys(brands).map(m => {
@@ -573,7 +589,7 @@ function renderRetirar(tab){
         const rows = brands[m][s], nota = rows.find(r => r.nota)?.nota;
         return `<div class="serie">${s ? `<p class="serie-name">${s}</p>` : ""}
         <div class="table-wrap"><table class="ret"><thead><tr>
-          <th>Código</th><th>Modelo</th><th class="num">Frío (kW)</th><th class="num">Calor (kW)</th><th>Alim.</th><th>Refrig.</th><th>Conex.</th><th class="num">Temp. imp. (°C)</th><th class="num">PVP</th><th class="num">Precio</th><th class="num">Stock</th><th class="motivo-col">Motivo de la retirada</th>
+          <th>Código</th><th>Modelo</th><th class="num">Frío (kW)</th><th class="num">Calor (kW)</th><th>Alim.</th><th>Refrig.</th><th>Conex.</th><th class="num">Temp. imp. (°C)</th><th class="num">PVP</th><th class="num">Precio</th><th class="num">Stock</th><th class="motivo-col">Motivo de la retirada</th><th class="ok-col">Validar retirada</th>
         </tr></thead><tbody>${rows.map(row).join("")}</tbody></table></div>
         ${nota ? `<p class="serie-nota">${nota}</p>` : ""}</div>`;
       }).join("")}
@@ -583,6 +599,12 @@ function renderRetirar(tab){
     ${tab.items.length ? body : `<div class="table-wrap"><table><tbody><tr><td class="emptyrow">Pendiente de añadir productos.</td></tr></tbody></table></div>`}
   </section>`;
 }
+document.addEventListener("change", e => {
+  const c = e.target.closest("input.retok"); if (!c) return;
+  const k = "ret-" + c.dataset.cod;
+  store[k] = store[k] || {}; store[k].ok = c.checked; save(k);
+  c.closest("tr").classList.toggle("validado", c.checked);
+});
 document.addEventListener("input", e => {
   const t = e.target.closest("textarea.motivo"); if (!t) return;
   const k = "ret-" + t.dataset.cod;
