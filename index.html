@@ -506,7 +506,7 @@ async function refresh(){
       Object.keys(store).forEach(k => { dirty[k] = ++stamp; });
       if (Object.keys(dirty).length) push();
     }
-    showSync("Datos compartidos: los cambios se guardan solos y los ve cualquiera con el enlace.");
+    showSync("Datos compartidos: los cambios se guardan solos.");
     render();
     setInterval(() => { if (document.visibilityState === "visible") refresh(); }, 20000);
     document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") refresh(); });
