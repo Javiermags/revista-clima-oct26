@@ -301,29 +301,33 @@ async function pull(){
   if (!r.ok) throw new Error("HTTP " + r.status);
   return r.json();
 }
+let lastData = null, lastSave = 0;
+const wait = ms => new Promise(r => setTimeout(r, ms));
 async function push(){
   if (saving){ saveAgain = true; return; }
   const snap = Object.assign({}, dirty), keys = Object.keys(snap); if (!keys.length) return;
   saving = true;
   try {
-    for (let intento = 0; intento < 4; intento++){
-      const remote = await pull();            // siempre sobre la última versión
-      const data = remote.data || {};
+    // primero se intenta con la versión que ya conocemos; solo si choca se descarga la última
+    let base = (SHA && lastData) ? { data: JSON.parse(JSON.stringify(lastData)), sha: SHA } : await pull();
+    let ok = false;
+    for (let intento = 0; intento < 6 && !ok; intento++){
+      const data = base.data || {};
       keys.forEach(k => { data[k] = store[k]; });
       const r = await fetch(WORKER, {
         method: "PUT", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data, sha: remote.sha })
+        body: JSON.stringify({ data, sha: base.sha })
       });
-      if (r.status === 409) continue;         // alguien guardó a la vez: reintenta
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      SHA = (await r.json()).sha;
+      if (r.status === 409){ await wait(1500 * (intento + 1)); base = await pull(); continue; }
+      if (!r.ok){ let m = "HTTP " + r.status; try { m = (await r.json()).error || m; } catch(e) {} throw new Error(m); }
+      SHA = (await r.json()).sha; lastData = data; lastSave = Date.now(); ok = true;
       keys.forEach(k => { if (dirty[k] === snap[k]) delete dirty[k]; });
       applyRemote(data);
       showSync("Guardado. Todos los que abran el enlace ven esta versión.");
-      break;
     }
+    if (!ok) throw new Error("otra persona está guardando a la vez");
   } catch(err){
-    showSync("No se pudo guardar (" + (err.message || "error") + "). Se reintentará.", true);
+    showSync("Reintentando guardar… (" + (err.message || "error") + ")", true);
     setTimeout(push, 5000);
   } finally {
     saving = false;
@@ -350,11 +354,11 @@ function rerender(){
 }
 document.addEventListener("focusout", () => { if (pendingRender){ pendingRender = false; setTimeout(render, 0); } });
 async function refresh(){
-  if (saving || Object.keys(dirty).length) return;
+  if (saving || Object.keys(dirty).length || Date.now() - lastSave < 30000) return;
   try {
     const remote = await pull();
     if (remote.sha && remote.sha === SHA) return;
-    SHA = remote.sha;
+    SHA = remote.sha; lastData = remote.data;
     applyRemote(remote.data || {});
   } catch(e) {}
 }
@@ -364,7 +368,7 @@ async function refresh(){
     const remote = await pull();
     ONLINE = true;
     if (remote.data){
-      SHA = remote.sha;
+      SHA = remote.sha; lastData = remote.data;
       applyRemote(remote.data);
     } else {
       // primera vez: sube lo que hubiera en este navegador
