@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Revista Clima Oct26</title>
+<title>Propuesta de porfolio de materiales</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
@@ -79,8 +79,7 @@ section{margin-bottom:40px}
 .lockbtn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .field.locked{background:var(--cell-soft);border-color:transparent}
 .field.locked input{color:var(--ink);font-weight:600;-webkit-text-fill-color:var(--ink);opacity:1}
-.sync{margin:0 0 12px;font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.sync .cfg{font:inherit;font-size:.82rem;font-weight:600;border:1.5px solid var(--line);background:var(--surface);color:var(--cell);border-radius:6px;padding:3px 10px;cursor:pointer}
+.sync{margin:0 0 12px;font-size:.88rem;color:var(--muted)}
 .sync.bad{color:var(--bad)}
 .field.warn{border-color:var(--bad)}
 .lockbtn:disabled{opacity:.5;cursor:not-allowed}
@@ -284,23 +283,65 @@ const DTO_T6 = 5;
 const KEY = "magserveis-porfolio-fv";
 let store = {};
 try { store = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { store = {}; }
-const GH = { owner: "Javiermags", repo: "revista-clima-oct26-datos", path: "datos.json", ownerLogin: "Javiermags" };
-const TOKEN_KEY = "revista-clima-oct26-token";
-let CAN_BUY = true, pendingRender = false, sha = null, online = false, saving = false;
-let token = ""; try { token = localStorage.getItem(TOKEN_KEY) || ""; } catch(e) {}
-const dirty = new Set(); let saveTimer = null;
-const BUY_FIELDS = ["pc", "lock"];
-const b64e = t => btoa(unescape(encodeURIComponent(t)));
-const b64d = t => decodeURIComponent(escape(atob(t.replace(/\n/g, ""))));
-const api = (url, opt = {}) => fetch("https://api.github.com/repos/" + GH.owner + "/" + GH.repo + "/contents/" + GH.path + url, {
-  ...opt, headers: { "Accept": "application/vnd.github+json", ...(token ? { "Authorization": "Bearer " + token } : {}), ...(opt.headers || {}) }
-});
+const WORKER = "https://revista-clima.portatilmagserveis.workers.dev";
+let CAN_BUY = true, pendingRender = false, SHA = null, ONLINE = false, saving = false, saveAgain = false;
+const dirty = {};          // cambios locales pendientes de subir
+let saveTimer = null, stamp = 0;
+const save = (k) => {
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e) {}
+  if (!k) return;
+  dirty[k] = ++stamp;
+  if (!ONLINE) return;
+  showSync("Guardando…");
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(push, 700);
+};
+async function pull(){
+  const r = await fetch(WORKER, { cache: "no-store" });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+async function push(){
+  if (saving){ saveAgain = true; return; }
+  const snap = Object.assign({}, dirty), keys = Object.keys(snap); if (!keys.length) return;
+  saving = true;
+  try {
+    for (let intento = 0; intento < 4; intento++){
+      const remote = await pull();            // siempre sobre la última versión
+      const data = remote.data || {};
+      keys.forEach(k => { data[k] = store[k]; });
+      const r = await fetch(WORKER, {
+        method: "PUT", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data, sha: remote.sha })
+      });
+      if (r.status === 409) continue;         // alguien guardó a la vez: reintenta
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      SHA = (await r.json()).sha;
+      keys.forEach(k => { if (dirty[k] === snap[k]) delete dirty[k]; });
+      applyRemote(data);
+      showSync("Guardado. Todos los que abran el enlace ven esta versión.");
+      break;
+    }
+  } catch(err){
+    showSync("No se pudo guardar (" + (err.message || "error") + "). Se reintentará.", true);
+    setTimeout(push, 5000);
+  } finally {
+    saving = false;
+    if (saveAgain){ saveAgain = false; push(); }
+  }
+}
+function applyRemote(data){
+  const before = JSON.stringify(store);
+  const next = {};
+  for (const k in data) next[k] = data[k];
+  for (const k in dirty) next[k] = store[k];  // lo que estás escribiendo no se pisa
+  store = next;
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e) {}
+  if (JSON.stringify(store) !== before) rerender();
+}
 function showSync(msg, bad){
   const el = document.getElementById("sync"); if (!el) return;
-  el.innerHTML = ""; const sp = document.createElement("span"); sp.textContent = msg; el.appendChild(sp);
-  const bt = document.createElement("button"); bt.type = "button"; bt.className = "cfg"; bt.textContent = token ? "Cambiar clave" : "Introducir clave de GitHub";
-  bt.onclick = () => { const t = prompt("Clave (token) de GitHub con permiso sobre " + GH.owner + "/" + GH.repo + ":", token); if (t === null) return; token = t.trim(); try { localStorage.setItem(TOKEN_KEY, token); } catch(e) {} start(); };
-  el.appendChild(bt); el.className = "sync" + (bad ? " bad" : "");
+  el.textContent = msg; el.className = "sync" + (bad ? " bad" : "");
 }
 function rerender(){
   const a = document.activeElement;
@@ -308,83 +349,36 @@ function rerender(){
   render();
 }
 document.addEventListener("focusout", () => { if (pendingRender){ pendingRender = false; setTimeout(render, 0); } });
-function applyRemote(remote){
-  for (const k in remote){
-    if (dirty.has(k)) continue;
-    const r = remote[k] || {};
-    const cur = store[k] || {};
-    store[k] = { ...r };
-    if (dirty.has(k)) Object.assign(store[k], cur);
-  }
-  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e) {}
-}
-async function pull(){
-  const r = await api("?ref=main&t=" + Date.now(), { cache: "no-store" });
-  if (r.status === 404){ sha = null; return {}; }
-  if (!r.ok) throw new Error("HTTP " + r.status);
-  const j = await r.json(); sha = j.sha;
-  return JSON.parse(b64d(j.content) || "{}");
-}
-async function push(){
-  if (!online || !token || saving || !dirty.size) return;
-  saving = true;
-  for (let attempt = 0; attempt < 3; attempt++){
-    try {
-      const remote = await pull();
-      const keys = [...dirty];
-      const out = { ...remote };
-      keys.forEach(k => {
-        const mine = { ...(store[k] || {}) };
-        if (!CAN_BUY){ BUY_FIELDS.forEach(f => { delete mine[f]; if (remote[k] && remote[k][f] !== undefined) mine[f] = remote[k][f]; }); }
-        out[k] = mine;
-      });
-      const body = { message: "Actualizar datos revista clima oct26", content: b64e(JSON.stringify(out, null, 1)), branch: "main" };
-      if (sha) body.sha = sha;
-      const r = await api("", { method: "PUT", body: JSON.stringify(body), headers: { "Content-Type": "application/json" } });
-      if (r.status === 409 || r.status === 422) continue;
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      sha = (await r.json()).content.sha;
-      keys.forEach(k => dirty.delete(k));
-      applyRemote(out);
-      showSync("Guardado en GitHub " + new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" }) + ".");
-      saving = false;
-      if (dirty.size) schedule();
-      return;
-    } catch(err){ showSync("No se pudo guardar en GitHub (" + err.message + "). Se reintentará.", true); break; }
-  }
-  saving = false; setTimeout(schedule, 5000);
-}
-function schedule(){ clearTimeout(saveTimer); saveTimer = setTimeout(push, 1200); }
-const save = (k) => {
-  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e) {}
-  if (!k) return;
-  dirty.add(k);
-  if (online && token) schedule();
-};
-async function start(){
+async function refresh(){
+  if (saving || Object.keys(dirty).length) return;
   try {
-    if (token){
-      const u = await fetch("https://api.github.com/user", { headers: { "Authorization": "Bearer " + token } });
-      CAN_BUY = u.ok ? ((await u.json()).login || "").toLowerCase() === GH.ownerLogin.toLowerCase() : false;
-    } else CAN_BUY = false;
     const remote = await pull();
-    online = true;
-    if (CAN_BUY && !Object.keys(remote).length){ Object.keys(store).forEach(k => dirty.add(k)); }
-    applyRemote(remote);
-    render();
-    if (!token) showSync("Solo lectura: introduce la clave de GitHub para poder guardar cambios.");
-    else showSync(CAN_BUY ? "Conectado. Los cambios se guardan en GitHub y los ve todo el que abra el enlace." : "Conectado. El precio de compra solo lo modifica Javier.");
-    if (dirty.size) schedule();
-  } catch(err){
-    online = false;
-    showSync("Sin conexión con GitHub: los cambios se guardan solo en este navegador.", true);
-  }
+    if (remote.sha && remote.sha === SHA) return;
+    SHA = remote.sha;
+    applyRemote(remote.data || {});
+  } catch(e) {}
 }
-setInterval(async () => {
-  if (!online || saving || dirty.size) return;
-  try { applyRemote(await pull()); rerender(); } catch(e) {}
-}, 30000);
-start();
+(async () => {
+  showSync("Cargando la última versión…");
+  try {
+    const remote = await pull();
+    ONLINE = true;
+    if (remote.data){
+      SHA = remote.sha;
+      applyRemote(remote.data);
+    } else {
+      // primera vez: sube lo que hubiera en este navegador
+      Object.keys(store).forEach(k => { dirty[k] = ++stamp; });
+      if (Object.keys(dirty).length) push();
+    }
+    showSync("Datos compartidos: los cambios se guardan solos y los ve cualquiera con el enlace.");
+    render();
+    setInterval(() => { if (document.visibilityState === "visible") refresh(); }, 20000);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") refresh(); });
+  } catch(e){
+    showSync("Sin conexión con los datos compartidos: los cambios se quedan solo en este navegador.", true);
+  }
+})();
 
 const eur = n => n.toLocaleString("es-ES",{minimumFractionDigits:2,maximumFractionDigits:2}) + " €";
 const r2 = n => Math.round(n*100)/100;
