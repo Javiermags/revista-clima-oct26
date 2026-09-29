@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Revista Clima Oct26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF; --ink:#1A2233; --muted:#6B7686; --line:#D9DEE5;
+  --cell:#22406B; --cell-soft:#E6ECF5; --sun:#F2B705; --good:#1E7A4F; --bad:#B23A2E;
+  --input:#F7F9FB;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121821; --surface:#1A222E; --ink:#E7ECF3; --muted:#95A0B0; --line:#2C3747;
+    --cell:#8FB2E6; --cell-soft:#223149; --sun:#F2B705; --good:#5CC393; --bad:#EF7B6F; --input:#131A24;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121821; --surface:#1A222E; --ink:#E7ECF3; --muted:#95A0B0; --line:#2C3747;
+  --cell:#8FB2E6; --cell-soft:#223149; --sun:#F2B705; --good:#5CC393; --bad:#EF7B6F; --input:#131A24;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding:40px 24px 64px}
+
+header{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;border-bottom:3px solid var(--cell);padding-bottom:20px;margin-bottom:32px}
+.company{font-weight:600;color:var(--muted);margin:0 0 4px}
+h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:clamp(2.4rem,6vw,3.6rem);line-height:1;margin:0;letter-spacing:-.01em}
+h1::after{content:"";display:block;width:56px;height:6px;background:var(--sun);margin-top:12px}
+.intro{margin:12px 0 0;color:var(--muted);max-width:60ch}
+
+.global{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.global label{font-weight:500}
+.global button{font:inherit;font-weight:600;border:0;background:var(--cell);color:var(--surface);padding:8px 14px;border-radius:6px;cursor:pointer}
+.global button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+section{margin-bottom:40px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:28px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:1.1rem;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;padding:10px 16px;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--cell);border-bottom-color:var(--sun)}
+.tabs button:hover{color:var(--ink)}
+.tabs button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.cmp{margin-top:48px}
+.cmp-title{font-size:1.9rem}
+.cmp-row{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin-bottom:18px}
+.cmp-head{display:block;border:0;padding:0;margin:0 0 14px}
+.cmp-head h2{margin:0}
+.cmp-head .sub{margin:0}
+.cmp-body{display:grid;grid-template-columns:1fr 1fr 200px;gap:16px;align-items:stretch}
+.prod{border:1px solid var(--line);border-radius:8px;padding:14px 16px;background:var(--input)}
+.prod.pending{border-style:dashed;display:flex;flex-direction:column;color:var(--muted)}
+.prod.pending p{margin:auto 0;text-align:center}
+.tag{display:inline-block;font-weight:600;font-size:.82rem;color:var(--cell);background:var(--cell-soft);padding:2px 10px;border-radius:999px;margin-bottom:8px}
+.stock{display:inline-block;font-size:.88rem;font-weight:600;padding:1px 10px;border-radius:999px;background:var(--sun);color:#1A2233}
+.stock.none{background:var(--cell-soft);color:var(--muted)}
+.tag.nowifi{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.tag.wifi{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good)}
+.pm{font-weight:700;margin:0}
+.pd{margin:2px 0 12px;color:var(--muted);font-size:.92rem}
+.prod dl{display:flex;flex-wrap:wrap;gap:12px 24px;margin:0;font-variant-numeric:tabular-nums}
+.prod dt{font-size:.82rem;color:var(--muted)}
+.prod dd{margin:0;font-weight:600}
+.prod dd.neto{color:var(--cell);font-size:1.1rem;font-weight:700}
+.verdict{display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:8px;padding:14px;background:var(--cell-soft);color:var(--muted);font-variant-numeric:tabular-nums}
+.verdict strong{font-size:1.4rem;font-family:"Barlow Condensed","Arial Narrow",sans-serif}
+.verdict.good{color:var(--good)} .verdict.bad{color:var(--bad)}
+@media (max-width:820px){.cmp-body{grid-template-columns:1fr}}
+.lockwrap{display:inline-flex;align-items:center;gap:6px}
+.lockbtn{font-size:1rem;line-height:1;border:1.5px solid var(--line);background:var(--surface);border-radius:6px;padding:6px 7px;cursor:pointer}
+.lockbtn[aria-pressed="true"]{background:var(--cell-soft);border-color:var(--cell)}
+.lockbtn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.field.locked{background:var(--cell-soft);border-color:transparent}
+.field.locked input{color:var(--ink);font-weight:600;-webkit-text-fill-color:var(--ink);opacity:1}
+.sync{margin:0 0 12px;font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.sync .cfg{font:inherit;font-size:.82rem;font-weight:600;border:1.5px solid var(--line);background:var(--surface);color:var(--cell);border-radius:6px;padding:3px 10px;cursor:pointer}
+.sync.bad{color:var(--bad)}
+.field.warn{border-color:var(--bad)}
+.lockbtn:disabled{opacity:.5;cursor:not-allowed}
+.emptyrow{text-align:center;color:var(--muted);padding:28px 14px}
+.empty{background:var(--surface);border:1.5px dashed var(--line);border-radius:10px;padding:40px 24px;text-align:center;color:var(--muted)}
+h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:1.6rem;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 14px}
+
+.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:1180px;font-variant-numeric:tabular-nums}
+th{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:1rem;text-align:left;color:var(--cell);background:var(--cell-soft);padding:12px 14px;white-space:nowrap}
+th.num,td.num{text-align:right}
+td{padding:12px 14px;border-top:1px solid var(--line);vertical-align:middle}
+tbody tr:hover{background:color-mix(in srgb,var(--cell-soft) 45%,transparent)}
+.model strong{display:block;font-weight:600}
+.model span{color:var(--muted);font-size:.9rem}
+.prov{font-weight:500}
+.neto{font-weight:600}
+.revista{font-weight:700;color:var(--cell);font-size:1.05rem}
+.t6m{font-weight:700}
+.portes{display:inline-block;font-weight:600;font-size:.88rem;padding:2px 10px;border-radius:999px;background:var(--cell-soft);color:var(--muted)}
+.portes.si{background:var(--sun);color:#1A2233}
+.t6p{color:var(--muted)}
+
+.field{display:inline-flex;align-items:center;gap:4px;background:var(--input);border:1.5px solid var(--line);border-radius:6px;padding:0 8px;transition:border-color .15s}
+.field:focus-within{border-color:var(--cell)}
+.field input{font:inherit;font-variant-numeric:tabular-nums;width:64px;border:0;background:transparent;color:var(--ink);padding:7px 0;text-align:right;-moz-appearance:textfield}
+.field input.wide{width:84px}
+.field input::-webkit-outer-spin-button,.field input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.field input:focus-visible{outline:none}
+.field em{font-style:normal;color:var(--muted)}
+.diff{display:block;font-size:.82rem;margin-top:3px;font-weight:500}
+.diff.good{color:var(--good)} .diff.bad{color:var(--bad)}
+
+.note{color:var(--muted);font-size:.9rem;margin-top:10px}
+
+@media (max-width:640px){
+  .wrap{padding:24px 16px 48px}
+  header{grid-template-columns:1fr}
+}
+@media print{
+  .sync{display:none}
+  .tabs{display:none}
+  body{background:#fff}
+  .global{display:none}
+  .table-wrap{border:1px solid #ccc;overflow:visible}
+  table{min-width:0}
+  .field{border:0;background:none;padding:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="sync" id="sync" role="status"></p>
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <header>
+    <div>
+      <h1 id="title">Fotovoltaica</h1>
+    </div>
+  </header>
+
+  <main id="families"></main>
+  <p class="note" id="note">Precio neto = PVP × (1 − descuento). Precio revista (precio base) = precio neto × (1 + margen). Precio T6 = precio revista × (1 − descuento T6); margen venta T6 = (precio T6 − precio neto) ÷ precio neto. Bajo el precio revista se indica la diferencia con el precio medio encontrado. Los valores editados se guardan en este navegador.</p>
+</div>
+
+<script>
+const TABS = [
+ {name:"Fotovoltaica", families:[
+  {
+    family: "Microinversores",
+    sub: "Deye, serie G4",
+    items: [
+      {id:"DYMC500",  prov:"Seguí", model:"DYMC500 – Microinversor Deye 500W",   ref:"SUN-M50G4-EU-Q0 + conector AC", pvp:190.91, dto:53},
+      {id:"DYMC1000", prov:"Seguí", model:"DYMC1000 – Microinversor Deye 1000W", ref:"SUN-M100G4-EU-Q0", pvp:232.53, dto:53},
+      {id:"DYMC1600", prov:"Seguí", model:"DYMC1600 – Microinversor Deye 1600W", ref:"SUN-M160G4-EU-Q0", pvp:339.30, dto:53},
+      {id:"DYMC2000", prov:"Seguí", model:"DYMC2000 – Microinversor Deye 2000W", ref:"SUN-M200G4-EU-Q0", pvp:420.00, dto:53},
+      {id:"DEYE2250", prov:"DSP Solar", model:"Microinversor Deye 2250W G4 4 MPPT", ref:"SUN-M225G4-EU-Q0-I", pvp:345.00, dto:41, portes:true}
+    ]
+  }
+ ]},
+ {name:"Grupos de impulsión", portes:false, medio:false, families:[
+  {family:"Nuevos propuestos", sub:"Grupos de impulsión a incorporar al porfolio", items:[
+    {id:"GI-R35S6N", vs:"directa", prov:"Ferco", model:"R35-S6-N – Grupo de impulsión directa", ref:"Bomba Wilo 25/6 SC", pvp:387.20, dto:50},
+    {id:"GI-R15S6N", vs:"puntofijo", prov:"Ferco", model:"R15-S6-N – Grupo de impulsión a punto fijo", ref:"Bomba Wilo 25/6 SC", pvp:519.20, dto:50},
+    {id:"GI-R25S6N", vs:"modulante", prov:"Ferco", model:"R25-S6-N – Grupo de impulsión mezcla", ref:"Bomba Wilo 25/6 SC", pvp:464.20, dto:50}
+  ]}
+ ], rows:[
+  {key:"directa", tipo:"Impulsión directa", uso:"Suelo radiante",
+   actual:{marca:"CABEL", cod:"29600C", stock:2, desc:"Impulsión directa para suelo radiante", pvp:773, revista:437.48},
+   },
+  {key:"puntofijo", tipo:"Impulsión a punto fijo", uso:"Suelo radiante / fancoil",
+   actual:{marca:"CABEL", cod:"29605C", stock:1, desc:"Impulsión a punto fijo para suelo radiante / fancoil", pvp:979, revista:553.98},
+   },
+  {key:"modulante", tipo:"Mezcla modulante", uso:"Bomba electrónica y servomotor",
+   actual:{marca:"CABEL", cod:"29610C", stock:0, desc:"Grupo de impulsión modulante con bomba electrónica y servomotor", pvp:1243, revista:505.80},
+   }
+ ]},
+ {name:"Termostatos suelo radiante", portes:false, medio:false, families:[
+  {family:"Nuevos propuestos", sub:"Termostatos de suelo radiante a incorporar al porfolio", items:[
+    {id:"TF-CM1P", vs:"cronofilar", wifi:false, prov:"Ferco", model:"CM1P – Cronotermostato digital cable frío/calor, superficie", ref:"Programable 7 días (4 periodos/día) · 2xAAA · 5–35 °C · 86x86x26", pvp:39.60, dto:50},
+    {id:"TF-CM2", vs:"hw-T4H110A1022", wifi:false, prov:"Ferco", model:"CM2 – Cronotermostato digital cable frío/calor, encastrado", ref:"Pantalla táctil · programable 7 días · bloqueo niños · sensor ventanas · 220V · 86x86x16", pvp:59.40, dto:50},
+    {id:"TF-GN1R", vs:"cronoradio", wifi:false, prov:"Ferco", model:"GN1R – Kit crono digital frío/calor superficie, radiofrecuencia", ref:"Cronotermostato AM1T + receptor RF1 · 1 zona · 2xAAA · 5–35 °C · 86x86x26", pvp:91.30, dto:50},
+    {id:"TF-GN1T", vs:"hw-Y6H910RW4013", wifi:true, prov:"Ferco", model:"GN1T – Kit crono digital frío/calor superficie, WiFi + RF", ref:"Cronotermostato AM1T + receptor WiFi GN · 1 zona · Alexa / Google · app Ecohome Life y TuyaSmart", pvp:111.10, dto:50},
+    {id:"TF-GN2R", vs:"hw-Y4H910RF4005", wifi:false, prov:"Ferco", model:"GN2R – Kit crono digital frío/calor encastrado, radiofrecuencia", ref:"Cronotermostato AM2 + receptor RF1 · 1 zona · táctil · 220V · 86x86x16", pvp:111.10, dto:50},
+    {id:"TF-GN2T", vs:"hw-Y6H810WF1005", wifi:true, prov:"Ferco", model:"GN2T – Kit crono digital frío/calor encastrado, WiFi + RF", ref:"Cronotermostato AM2 + receptor WiFi GN · 1 zona · táctil · 220V · Alexa / Google · app Ecohome Life y TuyaSmart", pvp:130.90, dto:50}
+  ]}
+ ], cmpSub:"Termostatos actuales (CABEL y Honeywell Home) frente a los nuevos propuestos, en precio revista. Ninguno de los CABEL tiene WiFi.", rows:[
+  {key:"friocalor", tipo:"Termostato digital frío/calor", uso:"Filar",
+   actual:{marca:"CABEL", cod:"6360013", wifi:false, stock:15, desc:"Termostato frío/calor filar", pvp:77, revista:35.51}
+   },
+  {key:"cronoradio", tipo:"Cronotermostato vía radio", uso:"Modelo 1715",
+   actual:{marca:"CABEL", cod:"6360006", wifi:false, stock:24, desc:"Cronotermostato vía radio 1715", pvp:219, revista:98.34, revista5:85.22}
+   },
+  {key:"cronofilar", tipo:"Cronotermostato filar", uso:"Modelo 1674",
+   actual:{marca:"CABEL", cod:"6360001", wifi:false, stock:27, desc:"Cronotermostato filar 1674", pvp:92, revista:42.46, revista5:33.97}
+   },
+  {key:"ambiente", tipo:"Termostato ambiente digital", uso:"Modelo 1593",
+   actual:{marca:"CABEL", cod:"6360003", wifi:false, stock:33, desc:"Termostato ambiente digital 1593", pvp:64, revista:29.64, revista5:24.70}
+   },
+  {key:"hw-YT42BRFT22", tipo:"DT4R", uso:"Digital inalámbrico ON/OFF",
+   actual:{marca:"Honeywell Home", cod:"YT42BRFT22", stock:32, wifi:false, desc:"DT4R digital inalámbrico ON/OFF, color negro", pvp:145, revista:94.03}
+   },
+  {key:"hw-YT42WRFT20", tipo:"DT4R", uso:"Digital inalámbrico ON/OFF",
+   actual:{marca:"Honeywell Home", cod:"YT42WRFT20", stock:12, wifi:false, desc:"DT4R digital inalámbrico ON/OFF, color blanco", pvp:145, revista:94.03}
+   },
+  {key:"hw-DT40BT22", tipo:"DT4", uso:"Digital cableado ON/OFF",
+   actual:{marca:"Honeywell Home", cod:"DT40BT22", stock:32, wifi:false, desc:"DT4 digital cableado ON/OFF, color negro", pvp:59, revista:38.26}
+   },
+  {key:"hw-DT40WT20", tipo:"DT4", uso:"Digital cableado ON/OFF",
+   actual:{marca:"Honeywell Home", cod:"DT40WT20", stock:100, wifi:false, desc:"DT4 digital cableado ON/OFF, color blanco", pvp:59, revista:38.26}
+   },
+  {key:"hw-Y6H810WF1005", tipo:"Lyric T6", uso:"Cronotermostato inteligente OpenTherm",
+   actual:{marca:"Honeywell Home", cod:"Y6H810WF1005", stock:60, wifi:true, desc:"T6 cableado, color negro", pvp:228, revista:152.17}
+   },
+  {key:"hw-Y6H910WF4032", tipo:"Lyric T6", uso:"Cronotermostato inteligente OpenTherm",
+   actual:{marca:"Honeywell Home", cod:"Y6H910WF4032", stock:80, wifi:true, desc:"T6 cableado, color blanco", pvp:228, revista:156.4}
+   },
+  {key:"hw-Y6H910RW4013", tipo:"Lyric T6R", uso:"Cronotermostato inteligente OpenTherm",
+   actual:{marca:"Honeywell Home", cod:"Y6H910RW4013", stock:62, wifi:true, desc:"T6R inalámbrico con soporte para mesa 220V", pvp:292, revista:185.29}
+   },
+  {key:"hw-T4H110A1022", tipo:"T4", uso:"Cableado programable semanal",
+   actual:{marca:"Honeywell Home", cod:"T4H110A1022", stock:78, wifi:false, desc:"T4 cableado programable semanal, montaje a pared", pvp:144, revista:85.97}
+   },
+  {key:"hw-T4H310A3032", tipo:"T4 OpenTherm", uso:"Cableado",
+   actual:{marca:"Honeywell Home", cod:"T4H310A3032", stock:22, wifi:false, desc:"T4 OpenTherm cableado, montaje a pared", pvp:144, revista:86.65}
+   },
+  {key:"hw-Y4H910RF4005", tipo:"T4R", uso:"Radiofrecuencia",
+   actual:{marca:"Honeywell Home", cod:"Y4H910RF4005", stock:65, wifi:false, desc:"T4R versión radiofrecuencia", pvp:243, revista:139.69}
+   },
+  {key:"hw-DT90A1008", tipo:"DT90", uso:"Ambiente digital cableado",
+   actual:{marca:"Honeywell Home", cod:"DT90A1008", stock:400, wifi:false, desc:"Termostato DT90 cableado", pvp:57, revista:25.38}
+   },
+  {key:"hw-DT90E1012", tipo:"DT90 Eco", uso:"Ambiente digital cableado",
+   actual:{marca:"Honeywell Home", cod:"DT90E1012", stock:0, wifi:false, desc:"Termostato DT90 (función Eco) cableado", pvp:68, revista:43.94}
+   },
+  {key:"hw-DT92A1004", tipo:"DT92", uso:"Ambiente digital inalámbrico",
+   actual:{marca:"Honeywell Home", cod:"DT92A1004", stock:128, wifi:false, desc:"Termostato DT92 inalámbrico", pvp:163, revista:99.95}
+   },
+  {key:"hw-DT92E1000", tipo:"DT92 Eco", uso:"Ambiente digital inalámbrico",
+   actual:{marca:"Honeywell Home", cod:"DT92E1000", stock:128, wifi:false, desc:"Termostato DT92 (función Eco) inalámbrico", pvp:174, revista:109.64}
+   },
+  {key:"hw-T3H110A0050", tipo:"T3", uso:"Programable",
+   actual:{marca:"Honeywell Home", cod:"T3H110A0050", stock:187, wifi:false, desc:"T3 termostato programable", pvp:98, revista:37.15}
+   },
+  {key:"hw-Y3H710RF0067", tipo:"T3R", uso:"Inalámbrico programable",
+   actual:{marca:"Honeywell Home", cod:"Y3H710RF0067", stock:393, wifi:false, desc:"T3R termostato inalámbrico programable", pvp:169, revista:65.56}
+   },
+  {key:"hw-CMT507A1007U", tipo:"CM507", uso:"Programable semanal digital",
+   actual:{marca:"Honeywell Home", cod:"CMT507A1007/U", stock:0, wifi:false, desc:"Termostato CM507 programable semanal digital", pvp:62, revista:52.67}
+   },
+  {key:"hw-ATP921R3118", tipo:"Evohome Connected", uso:"Kit controlador",
+   actual:{marca:"Honeywell Home", cod:"ATP921R3118", stock:8, wifi:true, desc:"Kit controlador Evohome táctil RF + soporte sobremesa + receptor bidireccional + pasarela smartphone", pvp:355, revista:258.61}
+   },
+  {key:"hw-HR924WE", tipo:"Evohome Connected", uso:"Kit radiador",
+   actual:{marca:"Honeywell Home", cod:"HR924WE", stock:1, wifi:true, desc:"Kit de 4 termostatos de radiador electrónicos vía radiofrecuencia", pvp:371, revista:251.51}
+   },
+  {key:"hw-T6360A1079", tipo:"MT200", uso:"Ambiente analógico",
+   actual:{marca:"Honeywell Home", cod:"T6360A1079", stock:518, wifi:false, desc:"Termostato T/N estándar", pvp:29, revista:17.44}
+   },
+  {key:"hw-T6360B1002", tipo:"MT200", uso:"Ambiente analógico",
+   actual:{marca:"Honeywell Home", cod:"T6360B1002", stock:86, wifi:false, desc:"Termostato T-6360B 1002", pvp:36, revista:19.32}
+   }
+ ]},
+ {name:"Depósitos de inercia acero al carbono", mode:"stock", sub:"Depósitos que tenemos actualmente en stock (sin contar el stock del CLC)", stock:[
+  {marca:"CABEL", cod:"1010001246", desc:"Depósito inercia multiposición Slim DIMSL30", ref:"Ref. fab. 423189 · descatalogado", stock:2, disp:2, ubic:"Suarep Ripollet: 2"},
+  {marca:"CABEL", cod:"1010001245", desc:"Depósito inercia multiposición DIM100", ref:"Ref. fab. 423202", stock:5, disp:2, ubic:"Suarep Ripollet: 4 (3 reservadas) · Suarep Vilanova: 1"},
+  {marca:"Vaillant", cod:"0326001108", desc:"Depósito de inercia VP RW 45/2 B, 45 L", ref:"Ref. fab. 0010034126 · 3 bar · Tmax 85 °C · 365x385 mm", stock:1, disp:1},
+  {marca:"CABEL", cod:"A004867590", desc:"Depósito inercia vertical mural DIVM-150, 150 L", ref:"Ref. fab. 424346 · acero al carbono decapado ST37-2", stock:1, disp:1},
+  {marca:"Valinox", cod:"00563602INR", desc:"Acumulador de inercia INR 100 L gama Rigid", ref:"Ref. fab. 00563602INR · 6 bar", stock:1, disp:1},
+  {marca:"Ferroli", cod:"A006590868", desc:"Depósito de inercia Ecopuffer HP 80", ref:"Ref. fab. 0Y110DXA · para instalaciones de climatización", stock:1, disp:1},
+  {marca:"Ferroli", cod:"A006590869", desc:"Depósito de inercia Ecopuffer HP 50", ref:"Ref. fab. 0Y11MDXA · para instalaciones de climatización", stock:1, disp:1},
+  {marca:"CABEL", cod:"A007030264", desc:"Depósito inercia vertical suelo DIVS-200R", ref:"Ref. fab. 425886 · acero al carbono decapado ST37-2", stock:2, disp:2},
+  {marca:"Mecalia", cod:"1110000228", desc:"Depósito de inercia DPAC/DI/MCL, 30 L vertical", ref:"Ref. fab. 08428 · 6 bar", stock:3, disp:3},
+  {marca:"ASA", cod:"0638004223", desc:"Depósito de inercia ASA 30-IN L BC, 30 L", ref:"Ref. fab. 7723209 · 6 bar · acero negro sin recubrimiento interior", stock:4, disp:4}
+ ]}
+];
+let current = 0;
+try { const t = parseInt(localStorage.getItem("magserveis-porfolio-tab")); if (TABS[t]) current = t; } catch(e) {}
+
+const DTO_T6 = 5;
+const KEY = "magserveis-porfolio-fv";
+let store = {};
+try { store = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { store = {}; }
+const GH = { owner: "Javiermags", repo: "revista-clima-oct26-datos", path: "datos.json", ownerLogin: "Javiermags" };
+const TOKEN_KEY = "revista-clima-oct26-token";
+let CAN_BUY = true, pendingRender = false, sha = null, online = false, saving = false;
+let token = ""; try { token = localStorage.getItem(TOKEN_KEY) || ""; } catch(e) {}
+const dirty = new Set(); let saveTimer = null;
+const BUY_FIELDS = ["pc", "lock"];
+const b64e = t => btoa(unescape(encodeURIComponent(t)));
+const b64d = t => decodeURIComponent(escape(atob(t.replace(/\n/g, ""))));
+const api = (url, opt = {}) => fetch("https://api.github.com/repos/" + GH.owner + "/" + GH.repo + "/contents/" + GH.path + url, {
+  ...opt, headers: { "Accept": "application/vnd.github+json", ...(token ? { "Authorization": "Bearer " + token } : {}), ...(opt.headers || {}) }
+});
+function showSync(msg, bad){
+  const el = document.getElementById("sync"); if (!el) return;
+  el.innerHTML = ""; const sp = document.createElement("span"); sp.textContent = msg; el.appendChild(sp);
+  const bt = document.createElement("button"); bt.type = "button"; bt.className = "cfg"; bt.textContent = token ? "Cambiar clave" : "Introducir clave de GitHub";
+  bt.onclick = () => { const t = prompt("Clave (token) de GitHub con permiso sobre " + GH.owner + "/" + GH.repo + ":", token); if (t === null) return; token = t.trim(); try { localStorage.setItem(TOKEN_KEY, token); } catch(e) {} start(); };
+  el.appendChild(bt); el.className = "sync" + (bad ? " bad" : "");
+}
+function rerender(){
+  const a = document.activeElement;
+  if (a && a.tagName === "INPUT" && a.closest("#families")) { pendingRender = true; return; }
+  render();
+}
+document.addEventListener("focusout", () => { if (pendingRender){ pendingRender = false; setTimeout(render, 0); } });
+function applyRemote(remote){
+  for (const k in remote){
+    if (dirty.has(k)) continue;
+    const r = remote[k] || {};
+    const cur = store[k] || {};
+    store[k] = { ...r };
+    if (dirty.has(k)) Object.assign(store[k], cur);
+  }
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e) {}
+}
+async function pull(){
+  const r = await api("?ref=main&t=" + Date.now(), { cache: "no-store" });
+  if (r.status === 404){ sha = null; return {}; }
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  const j = await r.json(); sha = j.sha;
+  return JSON.parse(b64d(j.content) || "{}");
+}
+async function push(){
+  if (!online || !token || saving || !dirty.size) return;
+  saving = true;
+  for (let attempt = 0; attempt < 3; attempt++){
+    try {
+      const remote = await pull();
+      const keys = [...dirty];
+      const out = { ...remote };
+      keys.forEach(k => {
+        const mine = { ...(store[k] || {}) };
+        if (!CAN_BUY){ BUY_FIELDS.forEach(f => { delete mine[f]; if (remote[k] && remote[k][f] !== undefined) mine[f] = remote[k][f]; }); }
+        out[k] = mine;
+      });
+      const body = { message: "Actualizar datos revista clima oct26", content: b64e(JSON.stringify(out, null, 1)), branch: "main" };
+      if (sha) body.sha = sha;
+      const r = await api("", { method: "PUT", body: JSON.stringify(body), headers: { "Content-Type": "application/json" } });
+      if (r.status === 409 || r.status === 422) continue;
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      sha = (await r.json()).content.sha;
+      keys.forEach(k => dirty.delete(k));
+      applyRemote(out);
+      showSync("Guardado en GitHub " + new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" }) + ".");
+      saving = false;
+      if (dirty.size) schedule();
+      return;
+    } catch(err){ showSync("No se pudo guardar en GitHub (" + err.message + "). Se reintentará.", true); break; }
+  }
+  saving = false; setTimeout(schedule, 5000);
+}
+function schedule(){ clearTimeout(saveTimer); saveTimer = setTimeout(push, 1200); }
+const save = (k) => {
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e) {}
+  if (!k) return;
+  dirty.add(k);
+  if (online && token) schedule();
+};
+async function start(){
+  try {
+    if (token){
+      const u = await fetch("https://api.github.com/user", { headers: { "Authorization": "Bearer " + token } });
+      CAN_BUY = u.ok ? ((await u.json()).login || "").toLowerCase() === GH.ownerLogin.toLowerCase() : false;
+    } else CAN_BUY = false;
+    const remote = await pull();
+    online = true;
+    if (CAN_BUY && !Object.keys(remote).length){ Object.keys(store).forEach(k => dirty.add(k)); }
+    applyRemote(remote);
+    render();
+    if (!token) showSync("Solo lectura: introduce la clave de GitHub para poder guardar cambios.");
+    else showSync(CAN_BUY ? "Conectado. Los cambios se guardan en GitHub y los ve todo el que abra el enlace." : "Conectado. El precio de compra solo lo modifica Javier.");
+    if (dirty.size) schedule();
+  } catch(err){
+    online = false;
+    showSync("Sin conexión con GitHub: los cambios se guardan solo en este navegador.", true);
+  }
+}
+setInterval(async () => {
+  if (!online || saving || dirty.size) return;
+  try { applyRemote(await pull()); rerender(); } catch(e) {}
+}, 30000);
+start();
+
+const eur = n => n.toLocaleString("es-ES",{minimumFractionDigits:2,maximumFractionDigits:2}) + " €";
+const r2 = n => Math.round(n*100)/100;
+const num = v => { if (v === "" || v == null) return null; const n = parseFloat(String(v).replace(",", ".")); return isNaN(n) ? null : n; };
+
+function render(){
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = TABS.map((t,i) => `<button type="button" role="tab" aria-selected="${i===current}" data-tab="${i}">${t.name}</button>`).join("");
+  document.getElementById("title").textContent = TABS[current].name;
+  const TAB = TABS[current], P = TAB.portes !== false, M = TAB.medio !== false, COLS = 8 + (P?1:0) + (M?1:0);
+  if (TAB.mode === "stock"){ document.getElementById("note").hidden = true; document.getElementById("families").innerHTML = renderStock(TAB); return; }
+  document.getElementById("note").hidden = false;
+  const DATA = TAB.families || [];
+  const root = document.getElementById("families");
+  root.innerHTML = DATA.map(f => `
+    <section>
+      <h2>${f.family}</h2>
+      <p class="sub">${f.sub}</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Proveedor</th>${P ? "<th>Portes</th>" : ""}<th>Modelo</th><th class="num">PVP</th><th class="num">Descuento</th>
+            <th class="num">Precio neto</th><th class="num">Margen</th><th class="num">Precio revista</th><th class="num">Margen venta T6</th>${M ? `<th class="num">Precio medio encontrado</th>` : ""}
+          </tr></thead>
+          <tbody>
+            ${f.items.length ? "" : `<tr><td colspan="${COLS}" class="emptyrow">Pendiente de añadir productos.</td></tr>`}
+            ${f.items.map(it => {
+              const s = store[it.id] || {};
+              const neto = it.neto ?? r2(it.pvp * (1 - it.dto/100));
+              const dto = it.dto ?? (1 - neto/it.pvp) * 100;
+              const dtoTxt = (Math.round(dto*10)/10).toString().replace(".", ",");
+              return `<tr data-id="${it.id}">
+                <td class="prov">${it.prov}</td>
+                ${P ? `<td><span class="portes ${it.portes ? "si" : ""}">${it.portes ? "Sí" : "No"}</span></td>` : ""}
+                <td class="model"><strong>${it.model}</strong><span>${it.ref}</span></td>
+                <td class="num">${eur(it.pvp)}</td>
+                <td class="num">${dtoTxt} %</td>
+                <td class="num neto" data-neto="${neto}">${eur(neto)}</td>
+                <td class="num"><span class="field"><input type="number" step="0.5" min="0" inputmode="decimal" data-k="m" value="${s.m ?? ""}" placeholder="—" aria-label="Margen ${it.id}"><em>%</em></span></td>
+                <td class="num"><span class="revista">—</span><span class="diff"></span></td>
+                <td class="num"><span class="t6m">—</span><span class="t6p diff"></span></td>
+                ${M ? `<td class="num"><span class="field"><input class="wide" type="number" step="0.01" min="0" inputmode="decimal" data-k="pm" value="${s.pm ?? ""}" placeholder="—" aria-label="Precio medio ${it.id}"><em>€</em></span></td>` : ""}
+              </tr>`;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    </section>`).join("") + (TAB.rows ? renderCompare(TAB) : "");
+  document.querySelectorAll("tbody tr[data-id]").forEach(update);
+}
+
+function renderStock(tab){
+  const rows = tab.stock;
+  const total = rows.reduce((a,r) => a + (r.disp || 0), 0);
+  return `<section><h2>Listado de stock</h2><p class="sub">${tab.sub}</p>
+    <div class="table-wrap"><table style="min-width:820px"><thead><tr>
+      <th>Marca</th><th>Código</th><th>Descripción</th><th class="num">Disponible</th><th class="num">Precio de compra</th><th class="num">Precio propuesto</th>
+    </tr></thead><tbody>
+    ${rows.length ? rows.map(r => {
+      const st = store["dep-" + r.cod] || {}, v = st.pp ?? "", pc = st.pc ?? "", lk = !!st.lock;
+      return `<tr>
+      <td class="prov">${r.marca || "—"}</td><td>${r.cod || "—"}</td>
+      <td class="model"><strong>${r.desc}</strong>${r.ref ? `<span>${r.ref}</span>` : ""}</td>
+      <td class="num"><span class="stock ${r.disp ? "" : "none"}">${r.disp ? r.disp + (r.disp === 1 ? " unidad" : " unidades") : "Sin stock"}</span>${r.ubic ? `<span class="diff" style="color:var(--muted)">${r.ubic}</span>` : ""}</td>
+      <td class="num"><span class="lockwrap"><span class="field ${lk ? "locked" : ""}"><input class="wide pc" type="number" step="0.01" min="0" inputmode="decimal" data-cod="${r.cod}" value="${pc}" placeholder="—" ${lk || !CAN_BUY ? "disabled" : ""} aria-label="Precio de compra ${r.cod}"><em>€</em></span><button type="button" class="lockbtn" data-cod="${r.cod}" aria-pressed="${lk}" ${CAN_BUY ? "" : "disabled"} title="${lk ? "Desbloquear (pulsa dos veces)" : "Bloquear"}">${lk ? "🔒" : "🔓"}</button></span></td>
+      <td class="num"><span class="field"><input class="wide pp" type="number" step="0.01" min="0" inputmode="decimal" data-cod="${r.cod}" value="${v}" placeholder="—" aria-label="Precio propuesto ${r.cod}"><em>€</em></span></td>
+    </tr>`;}).join("") + `<tr><td colspan="3" style="text-align:right;font-weight:600">Total unidades disponibles</td><td class="num" style="font-weight:700">${total}</td><td></td><td></td></tr>`
+    : `<tr><td colspan="6" class="emptyrow">Pendiente de añadir depósitos.</td></tr>`}
+    </tbody></table></div></section>`;
+}
+document.addEventListener("input", e => {
+  const inp = e.target.closest("input.pp, input.pc"); if (!inp) return;
+  const k = "dep-" + inp.dataset.cod;
+  store[k] = store[k] || {}; store[k][inp.classList.contains("pc") ? "pc" : "pp"] = inp.value; save(k);
+});
+document.addEventListener("click", e => {
+  const b = e.target.closest(".lockbtn"); if (!b || !CAN_BUY) return;
+  const k = "dep-" + b.dataset.cod; store[k] = store[k] || {};
+  const inp = b.parentElement.querySelector("input.pc"), f = inp.parentElement;
+  if (store[k].lock){
+    if (!b.dataset.confirm){ b.dataset.confirm = "1"; b.textContent = "¿Abrir?"; setTimeout(() => { if (b.dataset.confirm){ delete b.dataset.confirm; b.textContent = "🔒"; } }, 3000); return; }
+    delete b.dataset.confirm;
+    store[k].lock = false;
+  } else {
+    if (store[k].pc === undefined || store[k].pc === ""){ f.classList.add("warn"); setTimeout(() => f.classList.remove("warn"), 1200); inp.focus(); return; }
+    store[k].lock = true;
+  }
+  save(k);
+  const lk = store[k].lock;
+  inp.disabled = lk; f.classList.toggle("locked", lk);
+  b.textContent = lk ? "🔒" : "🔓"; b.title = lk ? "Desbloquear (pulsa dos veces)" : "Bloquear"; b.setAttribute("aria-pressed", lk);
+});
+
+function prod(p, label){
+  if (!p) return `<div class="prod pending"><span class="tag">${label}</span><p>Pendiente de añadir</p></div>`;
+  return `<div class="prod"><span class="tag">${label}</span>${p.wifi === false ? ` <span class="tag nowifi">Sin WiFi</span>` : p.wifi ? ` <span class="tag wifi">Con WiFi</span>` : ""}
+    <p class="pm">${p.marca}${p.cod && p.cod !== "—" ? " " + p.cod : ""}</p>
+    <p class="pd">${p.desc}</p>
+    <dl><div><dt>PVP</dt><dd>${eur(p.pvp)}</dd></div><div><dt>${p.revista5 != null ? "Precio revista (1 ud)" : "Precio revista"}</dt><dd class="neto">${p.revista != null ? eur(p.revista) : "—"}</dd></div>${p.revista5 != null ? `<div><dt>Precio revista (5 ud)</dt><dd>${eur(p.revista5)}</dd></div>` : ""}${p.stock != null ? `<div><dt>Stock</dt><dd><span class="stock ${p.stock ? "" : "none"}">${p.stock ? p.stock + (p.stock === 1 ? " unidad" : " unidades") : "Sin stock"}</span></dd></div>` : ""}</dl>
+  </div>`;
+}
+function renderCompare(tab){
+  const nuevos = (tab.families || []).flatMap(f => f.items);
+  return `<section class="cmp" id="cmpbox"><h2 class="cmp-title">Comparativa con lo que teníamos</h2><p class="sub">${tab.cmpSub || "Grupos CABEL actuales frente a los nuevos propuestos, en precio revista."}</p>` + tab.rows.map(r => {
+    const it = nuevos.find(n => n.vs === r.key);
+    let rv = null;
+    if (it){ const n = it.neto ?? r2(it.pvp * (1 - it.dto/100)); const m = num((store[it.id]||{}).m); if (m !== null) rv = r2(n * (1 + m/100)); }
+    r.nuevo = it ? {marca: it.prov, cod: "", wifi: it.wifi, desc: it.model, pvp: it.pvp, revista: rv} : null;
+    let verdict = "";
+    if (r.actual && r.nuevo && r.nuevo.revista != null){
+      const d = r.nuevo.revista - r.actual.revista, pc = d / r.actual.revista * 100;
+      verdict = `<div class="verdict ${d <= 0 ? "good" : "bad"}"><strong>${d > 0 ? "+" : ""}${eur(d)}</strong><span>${d > 0 ? "+" : ""}${pc.toFixed(1).replace(".", ",")} % en precio revista</span></div>`;
+    } else verdict = `<div class="verdict"><span>${r.nuevo ? "Falta el margen del propuesto" : "Sin comparativa todavía"}</span></div>`;
+    return `<section class="cmp-row">
+      <header class="cmp-head"><h2>${r.tipo}</h2><p class="sub">${r.uso}</p></header>
+      <div class="cmp-body">${prod(r.actual, "Actual")}${prod(r.nuevo, "Propuesto")}${verdict}</div>
+    </section>`;
+  }).join("") + `</section>`;
+}
+
+function update(tr){
+  const neto = parseFloat(tr.querySelector("[data-neto]").dataset.neto);
+  const m = num(tr.querySelector('[data-k="m"]').value);
+  const pmEl = tr.querySelector('[data-k="pm"]'); const pm = pmEl ? num(pmEl.value) : null;
+  const rev = tr.querySelector(".revista"), diff = tr.querySelector(".diff");
+  const t6m = tr.querySelector(".t6m"), t6p = tr.querySelector(".t6p");
+  if (m === null){ rev.textContent = "—"; diff.textContent = ""; diff.className = "diff"; t6m.textContent = "—"; t6p.textContent = ""; return; }
+  const pr = r2(neto * (1 + m/100));
+  rev.textContent = eur(pr);
+  const dt6 = DTO_T6;
+  const pt6 = r2(pr * (1 - dt6/100));
+  const mt6 = (pt6 - neto) / neto * 100;
+  t6m.textContent = mt6.toFixed(1).replace(".", ",") + " %";
+  t6m.style.color = mt6 < 0 ? "var(--bad)" : "";
+  t6p.textContent = "PVP T6 " + eur(pt6);
+  if (pm === null || pm === 0){ diff.textContent = ""; diff.className = "diff"; return; }
+  const d = (pr - pm) / pm * 100;
+  diff.textContent = (d > 0 ? "+" : "") + d.toFixed(1).replace(".", ",") + " % vs mercado";
+  diff.className = "diff " + (d <= 0 ? "good" : "bad");
+}
+
+
+document.addEventListener("input", e => {
+  const inp = e.target.closest("input[data-k]"); if (!inp) return;
+  const tr = inp.closest("tr"), id = tr.dataset.id;
+  store[id] = store[id] || {};
+  store[id][inp.dataset.k] = inp.value;
+  save(id); update(tr);
+  const box = document.getElementById("cmpbox");
+  if (box && TABS[current].rows) box.outerHTML = renderCompare(TABS[current]);
+});
+
+
+document.getElementById("tabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-tab]"); if (!b) return;
+  current = +b.dataset.tab;
+  try { localStorage.setItem("magserveis-porfolio-tab", current); } catch(e) {}
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
